@@ -1,0 +1,13 @@
+<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+<ul *ngIf="products.length > 0; else noProducts">
+  <li *ngFor="let product of products">
+    <h3>{{ product.nom }}</h3>
+    <p>{{ product.description }}</p>
+    <p>Prix : {{ product.prix }}</p>
+  </li>
+</ul>
+
+<ng-template #noProducts>
+  <p>Aucun produit disponible.</p>
+</ng-template>

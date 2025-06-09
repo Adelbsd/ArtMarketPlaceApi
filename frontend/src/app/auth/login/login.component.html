@@ -1,0 +1,36 @@
+<form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+  <div>
+    <label for="email">Email :</label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      [(ngModel)]="loginData.email"
+      required
+      email
+      #email="ngModel"
+    />
+    <div *ngIf="email.invalid && email.touched" style="color:red">
+      Email invalide
+    </div>
+  </div>
+
+  <div>
+    <label for="password">Mot de passe :</label>
+    <input
+      type="password"
+      id="password"
+      name="password"
+      [(ngModel)]="loginData.mdp"
+      required
+      minlength="6"
+      #mdp="ngModel"
+    />
+    <div *ngIf="mdp.invalid && mdp.touched" style="color:red">
+      Mot de passe requis (min 6 caractères)
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="loginForm.invalid">Se connecter</button>
+  
+</form>
