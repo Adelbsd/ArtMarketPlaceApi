@@ -1,11 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-admin',
-  standalone: true,
-  imports: [CommonModule],
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss']
+   imports: [CommonModule]
 })
-export class AdminComponent {}
+export class AdminComponent implements OnInit {
+  users: any[] = [];
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit() {
+    this.loadUsers();
+  }
+
+  loadUsers() {
+    this.http.get<any[]>('/api/admin/users').subscribe(data => {
+      this.users = data;
+    });
+  }
+
+  deleteUser(id: number) {
+    if (confirm('Supprimer cet utilisateur ?')) {
+      this.http.delete(`/api/admin/users/${id}`).subscribe(() => {
+        this.loadUsers();
+      });
+    }
+  }
+}

@@ -1,14 +1,13 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = '/api/auth'; 
+  private apiUrl = 'http://localhost:5009/api/auth';
 
   constructor(private http: HttpClient) {}
 
@@ -30,9 +29,24 @@ export class AuthService {
   if (!token) return null;
 
   const decoded: any = jwtDecode(token);
+  
+  const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+  console.log(' Décodage du JWT - rôle détecté :', role);
 
-  return decoded['role'] || decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || null;
+  const roleMap: { [key: string]: string } = {
+    'Admin': 'Admin',
+    'Artisan': 'Artisan',
+    'Client': 'Customer',
+    'Customer': 'Customer',
+    'Livreur': 'DeliveryPartner',
+    'DeliveryPartner': 'DeliveryPartner'
+  };
+
+
+  return role || null;
 }
+
+
   saveToken(token: string): void {
     localStorage.setItem('token', token);
   }
@@ -43,10 +57,10 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
-
+    return !!this.getToken();
   }
 }

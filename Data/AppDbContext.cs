@@ -75,7 +75,7 @@ modelBuilder.Entity<Avis>()
         .Property(l => l.PrixUnitaire)
         .HasPrecision(18, 2);
 
-    // mot de passe + utilisateurs 
+    
 
     CreatePasswordHash("MotDePasse123!", out byte[] hash, out byte[] salt);
 

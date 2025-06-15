@@ -1,2 +1,22 @@
-<h1>Bienvenue sur le tableau de bord Admin</h1>
-<p>Gestion des utilisateurs, produits, et rapports.</p>
+<h2>Gestion des utilisateurs</h2>
+
+<table border="1" cellpadding="5">
+  <thead>
+    <tr>
+      <th>Nom</th>
+      <th>Email</th>
+      <th>Rôle</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{ user.nomComplet }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.role }}</td>
+      <td>
+        <button (click)="deleteUser(user.id)"> Supprimer</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

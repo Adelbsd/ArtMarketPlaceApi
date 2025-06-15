@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-product-form',
   templateUrl: './product-form.component.html',
-  
+ 
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule], 
 })
@@ -25,19 +25,19 @@ export class ProductFormComponent {
   }
 
   onSubmit() {
-    if (this.productForm.invalid) return;
+  if (this.productForm.invalid) return;
 
-    const product = this.productForm.value;
+  const product = this.productForm.value;
 
-    this.http.post('/api/products', product).subscribe({
-      next: () => {
-        this.message = 'Produit créé avec succès !';
-        this.productForm.reset();
-      },
-      error: (err) => {
-        this.message = 'Erreur lors de la création du produit.';
-        console.error(err);
-      }
-    });
-  }
-}
+  this.http.post('http://localhost:5009/api/products', product).subscribe({
+    next: () => {
+      this.message = 'Produit créé avec succès !';
+      this.productForm.reset();
+    },
+    error: (err) => {
+      this.message = 'Erreur lors de la création du produit.';
+      console.error(err);
+    }
+  });
+}}
+
