@@ -17,14 +17,14 @@ export class AdminComponent implements OnInit {
   }
 
   loadUsers() {
-    this.http.get<any[]>('/api/admin/users').subscribe(data => {
+    this.http.get<any[]>('http://localhost:5009/api/admin/users').subscribe(data => {
       this.users = data;
     });
   }
 
   deleteUser(id: number) {
     if (confirm('Supprimer cet utilisateur ?')) {
-      this.http.delete(`/api/admin/users/${id}`).subscribe(() => {
+      this.http.delete(`http://localhost:5009/api/admin/users/${id}`).subscribe(() => {
         this.loadUsers();
       });
     }
