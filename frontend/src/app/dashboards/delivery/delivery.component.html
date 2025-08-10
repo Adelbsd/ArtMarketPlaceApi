@@ -1,2 +1,78 @@
-<h1>Bienvenue Livreurs</h1>
-<p>Voici les commandes à livrer.</p>
+<div class="container mt-4">
+  <h2 class="mb-4">Tableau de bord - Livreur</h2>
+
+  <!-- Section Livraisons assignées -->
+  <div class="card shadow mb-4">
+    <div class="card-header bg-primary text-white">
+      <h5>Livraisons en cours</h5>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-striped m-0">
+        <thead class="table-light">
+          <tr>
+            <th>Commande</th>
+            <th>Client</th>
+            <th>Adresse</th>
+            <th>Statut</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let delivery of deliveries">
+            <td>{{ delivery.orderId }}</td>
+            <td>{{ delivery.customerName }}</td>
+            <td>{{ delivery.address }}</td>
+            <td>
+              <span class="badge bg-warning text-dark" *ngIf="delivery.status === 'pending'">En attente</span>
+              <span class="badge bg-info" *ngIf="delivery.status === 'picked up'">Récupéré</span>
+              <span class="badge bg-primary" *ngIf="delivery.status === 'in transit'">En transit</span>
+              <span class="badge bg-success" *ngIf="delivery.status === 'delivered'">Livré</span>
+            </td>
+            <td>
+              <select class="form-select form-select-sm" [(ngModel)]="delivery.status">
+                <option value="picked up">Récupéré</option>
+                <option value="in transit">En transit</option>
+                <option value="delivered">Livré</option>
+              </select>
+              <button class="btn btn-sm btn-success mt-1"
+                      (click)="updateStatus(delivery.orderId, delivery.status)">
+                Mettre à jour
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section Historique -->
+  <div class="card shadow">
+    <div class="card-header bg-secondary text-white">
+      <h5>Historique des livraisons</h5>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-striped m-0">
+        <thead class="table-light">
+          <tr>
+            <th>Commande</th>
+            <th>Client</th>
+            <th>Adresse</th>
+            <th>Date</th>
+            <th>Statut final</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let history of deliveriesHistory">
+            <td>{{ history.orderId }}</td>
+            <td>{{ history.customerName }}</td>
+            <td>{{ history.address }}</td>
+            <td>{{ history.date | date:'short' }}</td>
+            <td>
+              <span class="badge bg-success">{{ history.status }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,43 +1,52 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-product-form',
-  templateUrl: './product-form.component.html',
- 
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule], 
+  imports: [ReactiveFormsModule, CommonModule],
+  templateUrl: './product-form.component.html'
 })
 export class ProductFormComponent {
   productForm: FormGroup;
-  message: string = '';
+  message = '';
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private authService: AuthService
+  ) {
     this.productForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      price: [0, [Validators.required, Validators.min(1)]],
-      imageUrl: [''],
-      category: ['']
+      price: ['', Validators.required],
+      imageUrl: ['', Validators.required],
+      category: ['', Validators.required]
     });
   }
 
   onSubmit() {
-  if (this.productForm.invalid) return;
+    if (this.productForm.invalid) return;
 
-  const product = this.productForm.value;
-
-  this.http.post('http://localhost:5009/api/products', product).subscribe({
-    next: () => {
-      this.message = 'Produit créé avec succès !';
-      this.productForm.reset();
-    },
-    error: (err) => {
-      this.message = 'Erreur lors de la création du produit.';
-      console.error(err);
+    const artisanId = this.authService.getUserId();
+    if (!artisanId) {
+      this.message = 'Impossible de récupérer votre ID utilisateur';
+      return;
     }
-  });
-}}
 
+    this.http.post(`http://localhost:5009/api/artisans/${artisanId}/products`, this.productForm.value)
+      .subscribe({
+        next: () => {
+          this.message = 'Produit créé avec succès !';
+          this.productForm.reset();
+        },
+        error: (err) => {
+          console.error('Erreur lors de la création du produit', err);
+          this.message = 'Erreur lors de la création du produit';
+        }
+      });
+  }
+}

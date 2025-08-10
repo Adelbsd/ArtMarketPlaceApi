@@ -1,0 +1,39 @@
+<div class="container mt-4">
+  <h2 class="text-primary mb-4">Produits de l'utilisateur {{ userId }}</h2>
+  <button class="btn btn-secondary mb-3" (click)="goBack()">
+  ⬅ Retour
+</button>
+
+
+  <div class="table-responsive shadow-sm rounded">
+    <table class="table table-striped table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>Nom</th>
+          <th>Prix</th>
+          <th>Statut</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>{{ product.nom }}</td>
+          <td>{{ product.prix }} €</td>
+          <td>
+            <span class="badge" [class.bg-success]="product.statut === 'Approuvé'" [class.bg-warning]="product.statut !== 'Approuvé'">
+              {{ product.statut }}
+            </span>
+          </td>
+          <td class="text-center">
+            <button *ngIf="product.statut !== 'Approuvé'" class="btn btn-sm btn-success me-2" (click)="approveProduct(product.id)">
+              ✅ Accepter
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="deleteProduct(product.id)">
+              🗑 Supprimer
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

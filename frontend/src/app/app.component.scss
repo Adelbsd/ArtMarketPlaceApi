@@ -1,0 +1,50 @@
+.site-banner {
+  background: linear-gradient(90deg, #0d6efd, #ff7f32); /* Bleu → Orange */
+  color: white;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.banner-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo {
+  font-size: 1.8rem;
+}
+
+.site-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.highlight {
+  color: #ffcc00; /* Jaune/orangé */
+}
+
+.btn-logout {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  background-color: #dc3545; /* Rouge */
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.btn-logout:hover {
+  background-color: #c82333;
+}

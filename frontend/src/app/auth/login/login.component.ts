@@ -43,10 +43,10 @@ export class LoginComponent {
       case 'Artisan':
         this.router.navigate(['/artisan-dashboard']);
         break;
-      case 'Client':
+      case 'Customer':
         this.router.navigate(['/customer-dashboard']);
         break;
-      case 'Livreur':
+      case 'DeliveryPartner':
         this.router.navigate(['/delivery-dashboard']);
         break;
       default:

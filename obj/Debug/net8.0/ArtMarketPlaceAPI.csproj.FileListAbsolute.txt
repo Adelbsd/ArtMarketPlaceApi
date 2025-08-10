@@ -1,5 +1,15 @@
 C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\appsettings.json
+C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\frontend\angular.json
+C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\frontend\package-lock.json
+C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\frontend\package.json
+C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\frontend\proxy.conf.json
+C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\frontend\src\app\proxy.conf.json
+C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\frontend\tsconfig.app.json
+C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\frontend\tsconfig.json
+C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\frontend\tsconfig.spec.json
+C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\package-lock.json
+C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\package.json
 C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\ArtMarketPlaceAPI.staticwebassets.endpoints.json
 C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\ArtMarketPlaceAPI.exe
 C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\ArtMarketPlaceAPI.deps.json
@@ -131,6 +141,7 @@ C:\Users\PC\ArtMarketPlaceAPI\obj\Debug\net8.0\ArtMarketPlaceAPI.AssemblyInfo.cs
 C:\Users\PC\ArtMarketPlaceAPI\obj\Debug\net8.0\ArtMarketPlaceAPI.csproj.CoreCompileInputs.cache
 C:\Users\PC\ArtMarketPlaceAPI\obj\Debug\net8.0\ArtMarketPlaceAPI.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\PC\ArtMarketPlaceAPI\obj\Debug\net8.0\ArtMarketPlaceAPI.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\PC\ArtMarketPlaceAPI\obj\Debug\net8.0\ArtMarketPlaceAPI.sourcelink.json
 C:\Users\PC\ArtMarketPlaceAPI\obj\Debug\net8.0\scopedcss\bundle\ArtMarketPlaceAPI.styles.css
 C:\Users\PC\ArtMarketPlaceAPI\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\PC\ArtMarketPlaceAPI\obj\Debug\net8.0\staticwebassets.build.json.cache
@@ -142,12 +153,3 @@ C:\Users\PC\ArtMarketPlaceAPI\obj\Debug\net8.0\refint\ArtMarketPlaceAPI.dll
 C:\Users\PC\ArtMarketPlaceAPI\obj\Debug\net8.0\ArtMarketPlaceAPI.pdb
 C:\Users\PC\ArtMarketPlaceAPI\obj\Debug\net8.0\ArtMarketPlaceAPI.genruntimeconfig.cache
 C:\Users\PC\ArtMarketPlaceAPI\obj\Debug\net8.0\ref\ArtMarketPlaceAPI.dll
-C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\frontend\angular.json
-C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\frontend\package-lock.json
-C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\frontend\package.json
-C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\frontend\proxy.conf.json
-C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\frontend\src\app\proxy.conf.json
-C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\frontend\tsconfig.app.json
-C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\frontend\tsconfig.json
-C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\frontend\tsconfig.spec.json
-C:\Users\PC\ArtMarketPlaceAPI\obj\Debug\net8.0\ArtMarketPlaceAPI.sourcelink.json

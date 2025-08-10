@@ -1,37 +1,61 @@
-<form (ngSubmit)="onSubmit()" #loginForm="ngForm">
-  <div>
-    <label for="email">Email :</label>
-    <input
-      type="email"
-      id="email"
-      name="email"
-      [(ngModel)]="loginData.email"
-      required
-      email
-      #email="ngModel"
-    />
-    <div *ngIf="email.invalid && email.touched" style="color:red">
-      Email invalide
-    </div>
+
+<video autoplay muted loop playsinline class="bg-video">
+  <source src="assets/videos/background.mp4" type="video/mp4">
+  Votre navigateur ne supporte pas les vidéos HTML5.
+</video>
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
+    <h3 class="text-center mb-4">Bienvenue à ART MARKET PLACE !</h3>
+    
+
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      
+      <div class="mb-3">
+        <label for="email" class="form-label">Email :</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="form-control"
+          [(ngModel)]="loginData.email"
+          required
+          email
+          #email="ngModel"
+        />
+        <div *ngIf="email.invalid && email.touched" class="text-danger small">
+          Email invalide
+        </div>
+      </div>
+
+      
+      <div class="mb-3">
+        <label for="password" class="form-label">Mot de passe :</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="form-control"
+          [(ngModel)]="loginData.mdp"
+          required
+          minlength="6"
+          #mdp="ngModel"
+        />
+        <div *ngIf="mdp.invalid && mdp.touched" class="text-danger small">
+          Mot de passe requis avec chiffres et lettres majuscules
+        </div>
+      </div>
+
+      
+      <div class="d-grid">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!loginForm.form.valid"
+        >
+          <i class="bi bi-box-arrow-in-right"></i> Se connecter
+        </button>
+      </div>
+    </form>
   </div>
-
-  <div>
-    <label for="password">Mot de passe :</label>
-    <input
-      type="password"
-      id="password"
-      name="password"
-      [(ngModel)]="loginData.mdp"
-      required
-      minlength="6"
-      #mdp="ngModel"
-    />
-    <div *ngIf="mdp.invalid && mdp.touched" style="color:red">
-      Mot de passe requis (min 6 caractères)
-    </div>
-  </div>
-
-  <button type="submit">Se connecter</button>
-
-  
-</form>
+</div>
