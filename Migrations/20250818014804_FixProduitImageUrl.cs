@@ -19,11 +19,7 @@ namespace ArtMarketPlaceAPI.Migrations
                 oldClrType: typeof(float),
                 oldType: "real");
 
-            migrationBuilder.AddColumn<string>(
-                name: "ImageUrl",
-                table: "Produits",
-                type: "nvarchar(max)",
-                nullable: true);
+           
 
             migrationBuilder.CreateTable(
                 name: "CartItems",

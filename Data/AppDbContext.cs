@@ -95,6 +95,10 @@ namespace ArtMarketPlaceAPI.Data
                 .Property(l => l.PrixUnitaire)
                 .HasPrecision(18, 2);
 
+            modelBuilder.Entity<Produit>()
+                .Property(p => p.Prix)
+                .HasPrecision(18, 2);
+
             // ---- Seed Users ----
             CreatePasswordHash("MotDePasse123!", out byte[] hash, out byte[] salt);
 

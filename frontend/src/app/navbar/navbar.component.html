@@ -7,14 +7,21 @@
 
     <!-- Lien utilisateur -->
     <ul class="navbar-nav me-auto">
-      <li class="nav-item" *ngIf="userPageLink">
+      <li class="nav-item" *ngIf="userPageLink && isLoggedIn()">
         <a class="nav-link text-white" [routerLink]="userPageLink">
           {{ userPageLabel }}
         </a>
       </li>
     </ul>
 
-    <!-- Bouton déconnexion -->
-    <button class="btn btn-outline-light" (click)="logout()">Se déconnecter</button>
+    <!-- Bouton déconnexion (seulement si connecté) -->
+    <button class="btn btn-outline-light" *ngIf="isLoggedIn()" (click)="logout()">
+      Se déconnecter
+    </button>
+
+    <!-- Bouton connexion (seulement si déconnecté) -->
+    <a *ngIf="!isLoggedIn()" class="btn btn-light" routerLink="/login">
+      Se connecter
+    </a>
   </div>
 </nav>
