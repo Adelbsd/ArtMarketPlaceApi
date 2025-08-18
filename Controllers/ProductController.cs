@@ -18,16 +18,35 @@ namespace ArtMarketPlaceAPI.Controllers
             _context = context;
         }
 
-        // GET : api/produits
+        //  GET : api/produits (avec recherche/filtre/tri)
         [HttpGet("api/produits")]
-        public async Task<ActionResult<IEnumerable<Produit>>> GetAllProducts()
+        public async Task<ActionResult<IEnumerable<Produit>>> GetAllProducts(
+            string? search, string? sortBy, decimal? minPrice, decimal? maxPrice)
         {
-            return await _context.Produits
+            var query = _context.Produits
                 .Include(p => p.Artisan)
-                .ToListAsync();
+                .AsQueryable();
+
+            // 🔍 Recherche par titre ou description
+            if (!string.IsNullOrWhiteSpace(search))
+                query = query.Where(p => p.Titre.Contains(search) || p.Description.Contains(search));
+
+            // 💰 Filtrage par prix
+            if (minPrice.HasValue) query = query.Where(p => p.Prix >= minPrice);
+            if (maxPrice.HasValue) query = query.Where(p => p.Prix <= maxPrice);
+
+            // ↕️ Tri
+            query = sortBy switch
+            {
+                "price_asc" => query.OrderBy(p => p.Prix),
+                "price_desc" => query.OrderByDescending(p => p.Prix),
+                _ => query.OrderBy(p => p.Titre) // par défaut : tri alphabétique
+            };
+
+            return await query.ToListAsync();
         }
 
-        // GET : api/artisans/{artisanId}/products
+        //  GET : api/artisans/{artisanId}/products
         [HttpGet("api/artisans/{artisanId}/products")]
         public async Task<ActionResult<IEnumerable<Produit>>> GetProductsByArtisan(int artisanId)
         {
@@ -37,12 +56,13 @@ namespace ArtMarketPlaceAPI.Controllers
 
             var produits = await _context.Produits
                 .Where(p => p.ArtisanId == artisanId)
+                .Include(p => p.Artisan)
                 .ToListAsync();
 
-            return produits;
+            return Ok(produits);
         }
 
-        // POST : api/artisans/{artisanId}/products
+        //  POST : api/artisans/{artisanId}/products
         [HttpPost("api/artisans/{artisanId}/products")]
         public async Task<ActionResult<Produit>> CreateProductForArtisan(int artisanId, Produit produit)
         {
@@ -58,7 +78,7 @@ namespace ArtMarketPlaceAPI.Controllers
                 new { artisanId = artisanId }, produit);
         }
 
-        // PUT : api/produits/{id}
+        //  PUT : api/produits/{id}
         [HttpPut("api/produits/{id}")]
         public async Task<IActionResult> UpdateProduct(int id, Produit produit)
         {

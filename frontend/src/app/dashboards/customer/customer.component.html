@@ -1,2 +1,42 @@
 <h1>Bienvenue Client</h1>
 <p>Consultez et achetez des produits d'artisans.</p>
+<div class="container mt-4">
+  <h2>Tableau de bord client</h2>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+  <!-- Achats récents -->
+  <div class="card mt-3">
+    <div class="card-header">Achats récents</div>
+    <ul class="list-group list-group-flush" *ngIf="dashboardData?.recentPurchases?.length">
+      <li class="list-group-item" *ngFor="let order of dashboardData.recentPurchases">
+        Commande #{{ order.id }} - {{ order.dateCommande | date:'short' }}
+        <ul>
+          <li *ngFor="let p of order.produits">
+            {{ p.titre }} (x{{ p.quantite }}) - {{ p.prixUnitaire }} €
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Produits favoris -->
+  <div class="card mt-3">
+    <div class="card-header">Produits favoris</div>
+    <ul class="list-group list-group-flush" *ngIf="dashboardData?.favorites?.length">
+      <li class="list-group-item" *ngFor="let fav of dashboardData.favorites">
+        {{ fav.titre }} ⭐ ({{ fav.note }}/5)
+      </li>
+    </ul>
+  </div>
+
+  <!-- Statut commandes -->
+  <div class="card mt-3">
+    <div class="card-header">Statut des commandes</div>
+    <ul class="list-group list-group-flush" *ngIf="dashboardData?.ordersStatus?.length">
+      <li class="list-group-item" *ngFor="let o of dashboardData.ordersStatus">
+        Commande #{{ o.id }} → {{ o.statut }}
+      </li>
+    </ul>
+  </div>
+</div>

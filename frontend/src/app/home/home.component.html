@@ -1,1 +1,56 @@
-<p>home works!</p>
+<div class="container mt-4">
+  <h2 class="mb-4">Catalogue des Produits</h2>
+
+  <!-- 🔎 Recherche et Tri -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <input type="text"
+             class="form-control"
+             placeholder="Rechercher un produit..."
+             [(ngModel)]="search"
+             (keyup.enter)="loadProducts()">
+    </div>
+    <div class="col-md-4">
+      <select class="form-select" [(ngModel)]="sortBy" (change)="loadProducts()">
+        <option value="">-- Trier par --</option>
+        <option value="price_asc">Prix croissant</option>
+        <option value="price_desc">Prix décroissant</option>
+        <option value="date_desc">Nouveautés</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-primary w-100" (click)="loadProducts()">Filtrer</button>
+    </div>
+  </div>
+
+  <!-- ⚠️ Messages d’erreur -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- 📦 Liste produits -->
+  <div class="row">
+    <div class="col-md-4 mb-4" *ngFor="let product of products">
+      <div class="card h-100 shadow-sm">
+
+        <!-- Image -->
+        <img [src]="product.imageUrl || 'assets/images/default-product.jpg'"
+             class="card-img-top"
+             [alt]="product.titre"
+             style="height: 200px; object-fit: cover;">
+
+        <!-- Détails -->
+        <div class="card-body">
+          <h5 class="card-title">{{ product.titre }}</h5>
+          <p class="card-text text-truncate">{{ product.description }}</p>
+        </div>
+
+        <!-- Prix -->
+        <div class="card-footer d-flex justify-content-between align-items-center">
+          <strong>{{ product.prix | currency:'EUR':'symbol' }}</strong>
+          <small class="text-muted">Ajouté le {{ product.dateAjout | date:'dd/MM/yyyy' }}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

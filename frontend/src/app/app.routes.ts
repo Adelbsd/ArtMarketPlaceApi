@@ -9,15 +9,18 @@ import { UserProductsComponent } from './admin/user-products/user-products.compo
 import { ProductListComponent } from './dashboards/artisan/product-list.component';
 import { AuthGuard } from './guards/auth.guard';
 import { PublicProductsComponent } from './public/public-products/public-products.component';
+import { HomeComponent } from './home/home.component';
 
 export const routes: Routes = [
+  { path: 'home', component: HomeComponent },
+ 
   { path: 'login', component: LoginComponent },
 
-  // Produits visibles uniquement si connecté
+ 
   { path: 'produits', component: PublicProductsComponent, canActivate: [AuthGuard] },
   
-  // Par défaut -> page de connexion
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
 
   {
     path: 'admin-dashboard',

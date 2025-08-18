@@ -4,6 +4,7 @@ using ArtMarketPlaceAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArtMarketPlaceAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250816234948_AddAvisTable")]
+    partial class AddAvisTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,68 +24,6 @@ namespace ArtMarketPlaceAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ArtMarketPlaceAPI.Models.Avis", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Commentaire")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateAvis")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Note")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProduitId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClientId");
-
-                    b.HasIndex("ProduitId");
-
-                    b.ToTable("Avis");
-                });
-
-            modelBuilder.Entity("ArtMarketPlaceAPI.Models.CartItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateAjout")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProduitId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantite")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClientId");
-
-                    b.HasIndex("ProduitId");
-
-                    b.ToTable("CartItems");
-                });
 
             modelBuilder.Entity("ArtMarketPlaceAPI.Models.LigneCommande", b =>
                 {
@@ -150,8 +91,8 @@ namespace ArtMarketPlaceAPI.Migrations
                         {
                             Id = 1,
                             Email = "admin@example.com",
-                            MdpHash = new byte[] { 215, 119, 215, 252, 191, 165, 19, 8, 213, 219, 137, 0, 41, 114, 171, 111, 25, 253, 205, 161, 10, 48, 244, 128, 73, 140, 158, 98, 153, 98, 8, 114, 119, 172, 117, 109, 99, 33, 65, 83, 51, 153, 37, 243, 246, 180, 90, 27, 232, 77, 99, 97, 106, 181, 61, 95, 220, 12, 108, 239, 126, 116, 190, 27 },
-                            MdpSalt = new byte[] { 12, 195, 198, 107, 98, 208, 101, 0, 117, 28, 86, 149, 210, 12, 198, 204, 163, 245, 56, 123, 19, 230, 213, 169, 218, 62, 130, 213, 123, 35, 110, 95, 199, 25, 116, 17, 139, 127, 149, 79, 41, 141, 58, 71, 198, 103, 134, 124, 222, 250, 190, 82, 139, 109, 148, 176, 58, 238, 147, 62, 233, 141, 111, 180, 200, 14, 71, 63, 9, 27, 128, 197, 141, 251, 150, 71, 88, 11, 15, 180, 191, 255, 234, 69, 222, 27, 104, 138, 205, 242, 57, 54, 144, 3, 236, 4, 192, 114, 150, 218, 170, 219, 106, 222, 233, 146, 71, 21, 33, 61, 40, 149, 198, 209, 78, 1, 61, 194, 125, 231, 79, 98, 11, 134, 252, 104, 255, 86 },
+                            MdpHash = new byte[] { 101, 223, 71, 225, 193, 193, 112, 40, 253, 251, 22, 96, 162, 25, 192, 194, 219, 23, 7, 99, 173, 244, 182, 185, 85, 110, 8, 237, 239, 91, 75, 178, 171, 108, 12, 194, 72, 63, 236, 19, 217, 255, 139, 188, 126, 250, 127, 244, 47, 85, 105, 5, 237, 251, 22, 148, 193, 8, 114, 84, 48, 158, 195, 158 },
+                            MdpSalt = new byte[] { 140, 57, 209, 138, 124, 242, 226, 192, 149, 193, 129, 145, 25, 242, 165, 15, 102, 159, 133, 254, 210, 45, 55, 251, 43, 157, 140, 47, 228, 117, 96, 132, 165, 203, 134, 132, 68, 255, 48, 81, 213, 129, 96, 94, 254, 198, 174, 45, 219, 224, 15, 57, 5, 185, 31, 194, 217, 19, 239, 161, 80, 16, 138, 223, 135, 106, 223, 88, 88, 171, 177, 198, 136, 158, 23, 127, 62, 83, 63, 230, 93, 133, 236, 51, 120, 174, 55, 97, 195, 108, 179, 51, 36, 154, 98, 171, 170, 71, 109, 249, 52, 176, 162, 93, 98, 54, 47, 225, 58, 100, 189, 8, 57, 93, 13, 213, 92, 58, 242, 70, 206, 109, 62, 66, 178, 37, 91, 0 },
                             NomComplet = "Admin Test",
                             Role = 3
                         },
@@ -159,8 +100,8 @@ namespace ArtMarketPlaceAPI.Migrations
                         {
                             Id = 2,
                             Email = "artisan@example.com",
-                            MdpHash = new byte[] { 215, 119, 215, 252, 191, 165, 19, 8, 213, 219, 137, 0, 41, 114, 171, 111, 25, 253, 205, 161, 10, 48, 244, 128, 73, 140, 158, 98, 153, 98, 8, 114, 119, 172, 117, 109, 99, 33, 65, 83, 51, 153, 37, 243, 246, 180, 90, 27, 232, 77, 99, 97, 106, 181, 61, 95, 220, 12, 108, 239, 126, 116, 190, 27 },
-                            MdpSalt = new byte[] { 12, 195, 198, 107, 98, 208, 101, 0, 117, 28, 86, 149, 210, 12, 198, 204, 163, 245, 56, 123, 19, 230, 213, 169, 218, 62, 130, 213, 123, 35, 110, 95, 199, 25, 116, 17, 139, 127, 149, 79, 41, 141, 58, 71, 198, 103, 134, 124, 222, 250, 190, 82, 139, 109, 148, 176, 58, 238, 147, 62, 233, 141, 111, 180, 200, 14, 71, 63, 9, 27, 128, 197, 141, 251, 150, 71, 88, 11, 15, 180, 191, 255, 234, 69, 222, 27, 104, 138, 205, 242, 57, 54, 144, 3, 236, 4, 192, 114, 150, 218, 170, 219, 106, 222, 233, 146, 71, 21, 33, 61, 40, 149, 198, 209, 78, 1, 61, 194, 125, 231, 79, 98, 11, 134, 252, 104, 255, 86 },
+                            MdpHash = new byte[] { 101, 223, 71, 225, 193, 193, 112, 40, 253, 251, 22, 96, 162, 25, 192, 194, 219, 23, 7, 99, 173, 244, 182, 185, 85, 110, 8, 237, 239, 91, 75, 178, 171, 108, 12, 194, 72, 63, 236, 19, 217, 255, 139, 188, 126, 250, 127, 244, 47, 85, 105, 5, 237, 251, 22, 148, 193, 8, 114, 84, 48, 158, 195, 158 },
+                            MdpSalt = new byte[] { 140, 57, 209, 138, 124, 242, 226, 192, 149, 193, 129, 145, 25, 242, 165, 15, 102, 159, 133, 254, 210, 45, 55, 251, 43, 157, 140, 47, 228, 117, 96, 132, 165, 203, 134, 132, 68, 255, 48, 81, 213, 129, 96, 94, 254, 198, 174, 45, 219, 224, 15, 57, 5, 185, 31, 194, 217, 19, 239, 161, 80, 16, 138, 223, 135, 106, 223, 88, 88, 171, 177, 198, 136, 158, 23, 127, 62, 83, 63, 230, 93, 133, 236, 51, 120, 174, 55, 97, 195, 108, 179, 51, 36, 154, 98, 171, 170, 71, 109, 249, 52, 176, 162, 93, 98, 54, 47, 225, 58, 100, 189, 8, 57, 93, 13, 213, 92, 58, 242, 70, 206, 109, 62, 66, 178, 37, 91, 0 },
                             NomComplet = "Artisan Test",
                             Role = 0
                         },
@@ -168,8 +109,8 @@ namespace ArtMarketPlaceAPI.Migrations
                         {
                             Id = 3,
                             Email = "client@example.com",
-                            MdpHash = new byte[] { 215, 119, 215, 252, 191, 165, 19, 8, 213, 219, 137, 0, 41, 114, 171, 111, 25, 253, 205, 161, 10, 48, 244, 128, 73, 140, 158, 98, 153, 98, 8, 114, 119, 172, 117, 109, 99, 33, 65, 83, 51, 153, 37, 243, 246, 180, 90, 27, 232, 77, 99, 97, 106, 181, 61, 95, 220, 12, 108, 239, 126, 116, 190, 27 },
-                            MdpSalt = new byte[] { 12, 195, 198, 107, 98, 208, 101, 0, 117, 28, 86, 149, 210, 12, 198, 204, 163, 245, 56, 123, 19, 230, 213, 169, 218, 62, 130, 213, 123, 35, 110, 95, 199, 25, 116, 17, 139, 127, 149, 79, 41, 141, 58, 71, 198, 103, 134, 124, 222, 250, 190, 82, 139, 109, 148, 176, 58, 238, 147, 62, 233, 141, 111, 180, 200, 14, 71, 63, 9, 27, 128, 197, 141, 251, 150, 71, 88, 11, 15, 180, 191, 255, 234, 69, 222, 27, 104, 138, 205, 242, 57, 54, 144, 3, 236, 4, 192, 114, 150, 218, 170, 219, 106, 222, 233, 146, 71, 21, 33, 61, 40, 149, 198, 209, 78, 1, 61, 194, 125, 231, 79, 98, 11, 134, 252, 104, 255, 86 },
+                            MdpHash = new byte[] { 101, 223, 71, 225, 193, 193, 112, 40, 253, 251, 22, 96, 162, 25, 192, 194, 219, 23, 7, 99, 173, 244, 182, 185, 85, 110, 8, 237, 239, 91, 75, 178, 171, 108, 12, 194, 72, 63, 236, 19, 217, 255, 139, 188, 126, 250, 127, 244, 47, 85, 105, 5, 237, 251, 22, 148, 193, 8, 114, 84, 48, 158, 195, 158 },
+                            MdpSalt = new byte[] { 140, 57, 209, 138, 124, 242, 226, 192, 149, 193, 129, 145, 25, 242, 165, 15, 102, 159, 133, 254, 210, 45, 55, 251, 43, 157, 140, 47, 228, 117, 96, 132, 165, 203, 134, 132, 68, 255, 48, 81, 213, 129, 96, 94, 254, 198, 174, 45, 219, 224, 15, 57, 5, 185, 31, 194, 217, 19, 239, 161, 80, 16, 138, 223, 135, 106, 223, 88, 88, 171, 177, 198, 136, 158, 23, 127, 62, 83, 63, 230, 93, 133, 236, 51, 120, 174, 55, 97, 195, 108, 179, 51, 36, 154, 98, 171, 170, 71, 109, 249, 52, 176, 162, 93, 98, 54, 47, 225, 58, 100, 189, 8, 57, 93, 13, 213, 92, 58, 242, 70, 206, 109, 62, 66, 178, 37, 91, 0 },
                             NomComplet = "Client Test",
                             Role = 1
                         },
@@ -177,11 +118,44 @@ namespace ArtMarketPlaceAPI.Migrations
                         {
                             Id = 4,
                             Email = "livreur@example.com",
-                            MdpHash = new byte[] { 215, 119, 215, 252, 191, 165, 19, 8, 213, 219, 137, 0, 41, 114, 171, 111, 25, 253, 205, 161, 10, 48, 244, 128, 73, 140, 158, 98, 153, 98, 8, 114, 119, 172, 117, 109, 99, 33, 65, 83, 51, 153, 37, 243, 246, 180, 90, 27, 232, 77, 99, 97, 106, 181, 61, 95, 220, 12, 108, 239, 126, 116, 190, 27 },
-                            MdpSalt = new byte[] { 12, 195, 198, 107, 98, 208, 101, 0, 117, 28, 86, 149, 210, 12, 198, 204, 163, 245, 56, 123, 19, 230, 213, 169, 218, 62, 130, 213, 123, 35, 110, 95, 199, 25, 116, 17, 139, 127, 149, 79, 41, 141, 58, 71, 198, 103, 134, 124, 222, 250, 190, 82, 139, 109, 148, 176, 58, 238, 147, 62, 233, 141, 111, 180, 200, 14, 71, 63, 9, 27, 128, 197, 141, 251, 150, 71, 88, 11, 15, 180, 191, 255, 234, 69, 222, 27, 104, 138, 205, 242, 57, 54, 144, 3, 236, 4, 192, 114, 150, 218, 170, 219, 106, 222, 233, 146, 71, 21, 33, 61, 40, 149, 198, 209, 78, 1, 61, 194, 125, 231, 79, 98, 11, 134, 252, 104, 255, 86 },
+                            MdpHash = new byte[] { 101, 223, 71, 225, 193, 193, 112, 40, 253, 251, 22, 96, 162, 25, 192, 194, 219, 23, 7, 99, 173, 244, 182, 185, 85, 110, 8, 237, 239, 91, 75, 178, 171, 108, 12, 194, 72, 63, 236, 19, 217, 255, 139, 188, 126, 250, 127, 244, 47, 85, 105, 5, 237, 251, 22, 148, 193, 8, 114, 84, 48, 158, 195, 158 },
+                            MdpSalt = new byte[] { 140, 57, 209, 138, 124, 242, 226, 192, 149, 193, 129, 145, 25, 242, 165, 15, 102, 159, 133, 254, 210, 45, 55, 251, 43, 157, 140, 47, 228, 117, 96, 132, 165, 203, 134, 132, 68, 255, 48, 81, 213, 129, 96, 94, 254, 198, 174, 45, 219, 224, 15, 57, 5, 185, 31, 194, 217, 19, 239, 161, 80, 16, 138, 223, 135, 106, 223, 88, 88, 171, 177, 198, 136, 158, 23, 127, 62, 83, 63, 230, 93, 133, 236, 51, 120, 174, 55, 97, 195, 108, 179, 51, 36, 154, 98, 171, 170, 71, 109, 249, 52, 176, 162, 93, 98, 54, 47, 225, 58, 100, 189, 8, 57, 93, 13, 213, 92, 58, 242, 70, 206, 109, 62, 66, 178, 37, 91, 0 },
                             NomComplet = "Livreur Test",
                             Role = 2
                         });
+                });
+
+            modelBuilder.Entity("Avis", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Commentaire")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateAvis")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Note")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProduitId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("ProduitId");
+
+                    b.ToTable("Avis");
                 });
 
             modelBuilder.Entity("Commande", b =>
@@ -249,11 +223,8 @@ namespace ArtMarketPlaceAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Prix")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Prix")
+                        .HasColumnType("real");
 
                     b.Property<int>("Stock")
                         .HasColumnType("int");
@@ -267,44 +238,6 @@ namespace ArtMarketPlaceAPI.Migrations
                     b.HasIndex("ArtisanId");
 
                     b.ToTable("Produits");
-                });
-
-            modelBuilder.Entity("ArtMarketPlaceAPI.Models.Avis", b =>
-                {
-                    b.HasOne("ArtMarketPlaceAPI.Models.User", "Client")
-                        .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Produit", "Produit")
-                        .WithMany("Avis")
-                        .HasForeignKey("ProduitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Client");
-
-                    b.Navigation("Produit");
-                });
-
-            modelBuilder.Entity("ArtMarketPlaceAPI.Models.CartItem", b =>
-                {
-                    b.HasOne("ArtMarketPlaceAPI.Models.User", "Client")
-                        .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Produit", "Produit")
-                        .WithMany()
-                        .HasForeignKey("ProduitId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Client");
-
-                    b.Navigation("Produit");
                 });
 
             modelBuilder.Entity("ArtMarketPlaceAPI.Models.LigneCommande", b =>
@@ -322,6 +255,25 @@ namespace ArtMarketPlaceAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Commande");
+
+                    b.Navigation("Produit");
+                });
+
+            modelBuilder.Entity("Avis", b =>
+                {
+                    b.HasOne("ArtMarketPlaceAPI.Models.User", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Produit", "Produit")
+                        .WithMany("Avis")
+                        .HasForeignKey("ProduitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Client");
 
                     b.Navigation("Produit");
                 });

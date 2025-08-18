@@ -31,7 +31,7 @@ export class DeliveryComponent implements OnInit {
     this.loadHistory();
   }
 
-  
+  // 📦 Livraisons en cours
   loadDeliveries() {
     this.http.get<any[]>(`${this.apiUrl}/${this.livreurId}/orders`)
       .subscribe({
@@ -40,6 +40,7 @@ export class DeliveryComponent implements OnInit {
       });
   }
 
+  // 📜 Historique
   loadHistory() {
     this.http.get<any[]>(`${this.apiUrl}/${this.livreurId}/history`)
       .subscribe({
@@ -48,14 +49,14 @@ export class DeliveryComponent implements OnInit {
       });
   }
 
-  
+  // 🔄 Mettre à jour le statut
   updateStatus(orderId: number, newStatus: string) {
     this.http.put(`${this.apiUrl}/orders/${orderId}/status`, { status: newStatus })
       .subscribe({
         next: () => {
-          console.log(`Statut de la commande ${orderId} mis à jour : ${newStatus}`);
-          this.loadDeliveries(); 
-          this.loadHistory();    
+          console.log(`Statut mis à jour : ${newStatus}`);
+          this.loadDeliveries();
+          this.loadHistory();
         },
         error: (err) => console.error('Erreur lors de la mise à jour du statut', err)
       });

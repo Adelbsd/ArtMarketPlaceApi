@@ -1,24 +1,38 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Product {
   id: number;
-  nom: string;
+  titre: string;
+  imageUrl?: string;
   description: string;
   prix: number;
+  categorie: string;
+  stock: number;
+  dateAjout: string; // en ISO string depuis l'API
+  artisanId: number;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = 'http://localhost:5009/api/products'; 
+  private apiUrl = 'http://localhost:5009/api/produits'; // ⚠️ ton controller utilise "api/produits"
 
   constructor(private http: HttpClient) {}
 
-  getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl);
+  getProducts(params?: any): Observable<Product[]> {
+    let httpParams = new HttpParams();
+    if (params) {
+      Object.keys(params).forEach(key => {
+        if (params[key]) {
+          httpParams = httpParams.set(key, params[key]);
+        }
+      });
+    }
+
+    return this.http.get<Product[]>(this.apiUrl, { params: httpParams });
   }
 
   createProduct(product: Product): Observable<Product> {

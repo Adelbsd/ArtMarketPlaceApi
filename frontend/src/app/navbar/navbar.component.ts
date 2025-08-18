@@ -1,29 +1,48 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
-  standalone: true,
-  imports: [CommonModule, RouterModule],
+   standalone: true,
   templateUrl: './navbar.component.html',
+   imports: [CommonModule, RouterModule],
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent {
-  userPageLink = '/profile';
-  userPageLabel = 'Mon profil';
+export class NavbarComponent implements OnInit {
+  userPageLink = '';
+  userPageLabel = '';
 
-  constructor(private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
-  isLoggedIn(): boolean {
-    return typeof window !== 'undefined' && !!localStorage.getItem('token');
+  ngOnInit() {
+    const role = this.authService.getUserRole();
+    switch (role) {
+      case 'Admin':
+        this.userPageLink = '/admin-dashboard';
+        this.userPageLabel = 'Tableau Admin';
+        break;
+      case 'Artisan':
+        this.userPageLink = '/artisan-dashboard';
+        this.userPageLabel = 'Tableau Artisan';
+        break;
+      case 'Client':
+        this.userPageLink = '/customer-dashboard';
+        this.userPageLabel = 'Tableau Client';
+        break;
+      case 'Livreur':
+        this.userPageLink = '/delivery-dashboard';
+        this.userPageLabel = 'Tableau Livreur';
+        break;
+    }
   }
 
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn(); // Vérifie si un token existe
+  }
   logout() {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('token');
-      this.router.navigate(['/login']);
-    }
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

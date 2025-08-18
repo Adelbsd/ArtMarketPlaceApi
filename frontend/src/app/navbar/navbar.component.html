@@ -1,14 +1,16 @@
 <nav class="navbar navbar-expand-lg" style="background-color: #004085; color: white;">
   <div class="container-fluid">
     <!-- Nom du site -->
-    <a class="navbar-brand fw-bold text-white" routerLink="/home">
+    <a class="navbar-brand fw-bold text-white" routerLink="home">
       🎨 Art Market Place
     </a>
 
     <!-- Lien utilisateur -->
     <ul class="navbar-nav me-auto">
-      <li class="nav-item">
-        <a class="nav-link text-white" [routerLink]="userPageLink">{{ userPageLabel }}</a>
+      <li class="nav-item" *ngIf="userPageLink">
+        <a class="nav-link text-white" [routerLink]="userPageLink">
+          {{ userPageLabel }}
+        </a>
       </li>
     </ul>
 
