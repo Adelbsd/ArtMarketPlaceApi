@@ -10,7 +10,7 @@ export interface Product {
   prix: number;
   categorie: string;
   stock: number;
-  dateAjout: string; // en ISO string depuis l'API
+  dateAjout: string; 
   artisanId: number;
 }
 
@@ -18,10 +18,11 @@ export interface Product {
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = 'http://localhost:5009/api/produits'; // ⚠️ ton controller utilise "api/produits"
+  private apiUrl = 'http://localhost:5009/api'; 
 
   constructor(private http: HttpClient) {}
 
+  // Récupère tous les produits (pour Admin ou Client)
   getProducts(params?: any): Observable<Product[]> {
     let httpParams = new HttpParams();
     if (params) {
@@ -32,14 +33,25 @@ export class ProductService {
       });
     }
 
-    return this.http.get<Product[]>(this.apiUrl, { params: httpParams });
+    return this.http.get<Product[]>(`${this.apiUrl}/produits`, { params: httpParams });
   }
 
-  createProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>(this.apiUrl, product);
+  
+  getProductsByArtisan(artisanId: number): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}/artisans/${artisanId}/products`);
+  }
+
+  // Créer un produit
+  createProduct(product: Product, artisanId?: number): Observable<Product> {
+    if (artisanId) {
+      
+      return this.http.post<Product>(`${this.apiUrl}/artisans/${artisanId}/products`, product);
+    }
+    
+    return this.http.post<Product>(`${this.apiUrl}/produits`, product);
   }
 
   deleteProduct(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/produits/${id}`);
   }
 }

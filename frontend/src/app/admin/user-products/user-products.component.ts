@@ -21,7 +21,8 @@ export class UserProductsComponent implements OnInit {
 
   ngOnInit() {
     this.userId = Number(this.route.snapshot.paramMap.get('id'));
-    this.http.get<any[]>(`http://localhost:5009/api/admin/users/${this.userId}/products`)
+   this.http.get<any[]>(`http://localhost:5009/api/artisans/${this.userId}/produits`)
+
       .subscribe(data => {
         this.products = data;
       });
@@ -29,7 +30,8 @@ export class UserProductsComponent implements OnInit {
 
   deleteProduct(productId: number) {
     if (confirm('Supprimer ce produit ?')) {
-      this.http.delete(`http://localhost:5009/api/admin/products/${productId}`)
+      this.http.delete(`http://localhost:5009/api/Produits/${productId}`)
+
         .subscribe(() => {
           this.products = this.products.filter(p => p.id !== productId);
         });

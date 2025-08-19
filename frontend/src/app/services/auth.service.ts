@@ -63,16 +63,24 @@ export class AuthService {
   }
 
   getUserId(): number | null {
-    const token = this.getToken();
-    if (!token) return null;
+  const token = this.getToken();
+  if (!token) return null;
 
-    try {
-      const decoded: any = jwtDecode(token);
-      return decoded["nameid"] || decoded["sub"] || null;
-    } catch {
-      return null;
-    }
+  try {
+    const decoded: any = jwtDecode(token);
+    console.log("🔑 Token décodé :", decoded);
+
+    return (
+      decoded["nameid"] ||
+      decoded["sub"] ||
+      decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] ||
+      null
+    );
+  } catch (error) {
+    console.error("Erreur lors du décodage du token :", error);
+    return null;
   }
+}
 
   saveToken(token: string): void {
     if (this.isBrowser()) {

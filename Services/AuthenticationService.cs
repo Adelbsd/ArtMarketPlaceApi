@@ -44,24 +44,25 @@ namespace ArtMarketPlaceAPI.Services
             return "Utilisateur enregistré";
         }
 
-         public async Task<object> LoginAsync(Login loginDto)
-    {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email);
-        if (user == null)
-            throw new Exception("Utilisateur non trouvé");
-
-        if (!VerifyPasswordHash(loginDto.Mdp, user.MdpHash, user.MdpSalt))
-            throw new Exception("Mot de passe incorrect");
-
-        var token = GenerateJwtToken(user);
-
-        return new
+        public async Task<object> LoginAsync(Login loginDto)
         {
-            token,
-            email = user.Email,
-            role = user.Role
-        };
-    }
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email);
+            if (user == null)
+                throw new Exception("Utilisateur non trouvé");
+
+            if (!VerifyPasswordHash(loginDto.Mdp, user.MdpHash, user.MdpSalt))
+                throw new Exception("Mot de passe incorrect");
+
+            var token = GenerateJwtToken(user);
+
+            return new
+            {
+                token,
+                email = user.Email,
+                role = user.Role,
+                userId = user.Id // 👈 pratique pour debug côté Angular
+            };
+        }
 
         private void CreatePasswordHash(string mdp, out byte[] hash, out byte[] salt)
         {
@@ -81,14 +82,12 @@ namespace ArtMarketPlaceAPI.Services
         {
             var claims = new[]
             {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // 👈 ID inclus dans le token
                 new Claim(ClaimTypes.Name, user.Email),
                 new Claim(ClaimTypes.Role, user.Role.ToString())
-
             };
 
-#pragma warning disable CS8604 // Possible null reference argument.
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-#pragma warning restore CS8604 // Possible null reference argument.
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
@@ -101,6 +100,5 @@ namespace ArtMarketPlaceAPI.Services
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
     }
 }

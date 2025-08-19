@@ -17,8 +17,9 @@
       </thead>
       <tbody>
         <tr *ngFor="let product of products">
-          <td>{{ product.nom }}</td>
+          <td>{{ product.titre }}</td>
           <td>{{ product.prix }} €</td>
+          <td>{{ product.description }} €</td>
           <td>
             <span class="badge" [class.bg-success]="product.statut === 'Approuvé'" [class.bg-warning]="product.statut !== 'Approuvé'">
               {{ product.statut }}

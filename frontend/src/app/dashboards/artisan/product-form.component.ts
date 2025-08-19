@@ -1,52 +1,53 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-product-form',
+  templateUrl: './product-form.component.html',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
-  templateUrl: './product-form.component.html'
+  imports: [CommonModule, ReactiveFormsModule], 
 })
 export class ProductFormComponent {
   productForm: FormGroup;
-  message = '';
+  message: string = '';
 
   constructor(
-    private fb: FormBuilder,
+    private fb: FormBuilder, 
     private http: HttpClient,
     private authService: AuthService
   ) {
     this.productForm = this.fb.group({
-      title: ['', Validators.required],
+      titre: ['', Validators.required],         
       description: ['', Validators.required],
-      price: ['', Validators.required],
-      imageUrl: ['', Validators.required],
-      category: ['', Validators.required]
+      prix: [0, [Validators.required, Validators.min(1)]], 
+      imageUrl: [''],
+      categorie: [''],
+      stock: [1, [Validators.required, Validators.min(1)]]  
     });
   }
 
   onSubmit() {
     if (this.productForm.invalid) return;
 
-    const artisanId = this.authService.getUserId();
+    const artisanId = this.authService.getUserId(); // récupère l'ID de l'artisan connecté
     if (!artisanId) {
-      this.message = 'Impossible de récupérer votre ID utilisateur';
-      return;
-    }
+    this.message = '❌ Impossible de créer le produit : artisan non identifié.';
+    return;
+  }
+    const product = this.productForm.value; // on n’envoie pas artisanId dans le body !
 
-    this.http.post(`http://localhost:5009/api/artisans/${artisanId}/products`, this.productForm.value)
-      .subscribe({
-        next: () => {
-          this.message = 'Produit créé avec succès !';
-          this.productForm.reset();
-        },
-        error: (err) => {
-          console.error('Erreur lors de la création du produit', err);
-          this.message = 'Erreur lors de la création du produit';
-        }
-      });
+    this.http.post(`http://localhost:5009/api/artisans/${artisanId}/produits`, product).subscribe({
+      next: () => {
+        this.message = '✅ Produit créé avec succès !';
+        this.productForm.reset();
+      },
+      error: (err) => {
+        this.message = '❌ Erreur lors de la création du produit.';
+        console.error('Erreur API:', err);
+      }
+    });
   }
 }

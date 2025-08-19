@@ -1,27 +1,48 @@
-<nav class="navbar navbar-expand-lg" style="background-color: #004085; color: white;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
   <div class="container-fluid">
-    <!-- Nom du site -->
-    <a class="navbar-brand fw-bold text-white" routerLink="home">
-      🎨 Art Market Place
-    </a>
+    <!-- Logo -->
+    <a class="navbar-brand fw-bold" routerLink="/">🎨 ArtMarketPlace</a>
 
-    <!-- Lien utilisateur -->
-    <ul class="navbar-nav me-auto">
-      <li class="nav-item" *ngIf="userPageLink && isLoggedIn()">
-        <a class="nav-link text-white" [routerLink]="userPageLink">
-          {{ userPageLabel }}
-        </a>
-      </li>
-    </ul>
-
-    <!-- Bouton déconnexion (seulement si connecté) -->
-    <button class="btn btn-outline-light" *ngIf="isLoggedIn()" (click)="logout()">
-      Se déconnecter
+    <!-- Bouton toggle pour mobile -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Bouton connexion (seulement si déconnecté) -->
-    <a *ngIf="!isLoggedIn()" class="btn btn-light" routerLink="/login">
-      Se connecter
-    </a>
+    <!-- Liens de navigation -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/">Accueil</a>
+        </li>
+
+        <!-- Lien vers le tableau de bord selon le rôle -->
+        <li class="nav-item" *ngIf="isLoggedIn()">
+          <a class="nav-link fw-semibold text-primary" [routerLink]="userPageLink">
+            {{ userPageLabel }}
+          </a>
+        </li>
+      </ul>
+
+      <!-- Boutons à droite -->
+      <ul class="navbar-nav ms-auto">
+        <!-- Si connecté -->
+        <li class="nav-item" *ngIf="isLoggedIn()">
+          <button class="btn btn-outline-light btn-sm" (click)="logout()">🚪 Déconnexion</button>
+        </li>
+
+        <!-- Si pas connecté -->
+        <li class="nav-item" *ngIf="!isLoggedIn()">
+          <a class="btn btn-primary btn-sm" routerLink="/login">🔑 Connexion</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>

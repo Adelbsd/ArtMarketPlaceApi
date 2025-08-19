@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ArtMarketPlaceAPI.Models;
+using ArtMarketPlaceAPI.DTO;
 using ArtMarketPlaceAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -9,17 +10,18 @@ using System.Threading.Tasks;
 namespace ArtMarketPlaceAPI.Controllers
 {
     [ApiController]
-    public class ProductsController : ControllerBase
+    [Route("api/[controller]")] // → api/produits
+    public class ProduitsController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public ProductsController(AppDbContext context)
+        public ProduitsController(AppDbContext context)
         {
             _context = context;
         }
 
-        //  GET : api/produits (avec recherche/filtre/tri)
-        [HttpGet("api/produits")]
+        // ✅ GET : api/produits (avec filtres)
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<Produit>>> GetAllProducts(
             string? search, string? sortBy, decimal? minPrice, decimal? maxPrice)
         {
@@ -27,27 +29,62 @@ namespace ArtMarketPlaceAPI.Controllers
                 .Include(p => p.Artisan)
                 .AsQueryable();
 
-            // 🔍 Recherche par titre ou description
             if (!string.IsNullOrWhiteSpace(search))
                 query = query.Where(p => p.Titre.Contains(search) || p.Description.Contains(search));
 
-            // 💰 Filtrage par prix
             if (minPrice.HasValue) query = query.Where(p => p.Prix >= minPrice);
             if (maxPrice.HasValue) query = query.Where(p => p.Prix <= maxPrice);
 
-            // ↕️ Tri
             query = sortBy switch
             {
                 "price_asc" => query.OrderBy(p => p.Prix),
                 "price_desc" => query.OrderByDescending(p => p.Prix),
-                _ => query.OrderBy(p => p.Titre) // par défaut : tri alphabétique
+                _ => query.OrderBy(p => p.Titre)
             };
 
             return await query.ToListAsync();
         }
 
-        //  GET : api/artisans/{artisanId}/products
-        [HttpGet("api/artisans/{artisanId}/products")]
+        // ✅ GET : api/produits/{id}
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Produit>> GetProduitById(int id)
+        {
+            var produit = await _context.Produits
+                .Include(p => p.Artisan)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (produit == null)
+                return NotFound();
+
+            return produit;
+        }
+
+        // ✅ POST : api/produits
+        [HttpPost]
+        public async Task<ActionResult<Produit>> CreateProduit([FromBody] CreateProduitDto dto)
+        {
+            if (dto == null)
+                return BadRequest("Produit invalide");
+
+            var produit = new Produit
+            {
+                Titre = dto.Titre,
+                ImageUrl = dto.ImageUrl,
+                Description = dto.Description,
+                Prix = dto.Prix,
+                Categorie = dto.Categorie,
+                Stock = dto.Stock,
+                DateAjout = DateTime.Now
+            };
+
+            _context.Produits.Add(produit);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetProduitById), new { id = produit.Id }, produit);
+        }
+
+        // ✅ GET : api/artisans/{artisanId}/produits
+        [HttpGet("/api/artisans/{artisanId}/produits")]
         public async Task<ActionResult<IEnumerable<Produit>>> GetProductsByArtisan(int artisanId)
         {
             var artisan = await _context.Users.FindAsync(artisanId);
@@ -62,25 +99,35 @@ namespace ArtMarketPlaceAPI.Controllers
             return Ok(produits);
         }
 
-        //  POST : api/artisans/{artisanId}/products
-        [HttpPost("api/artisans/{artisanId}/products")]
-        public async Task<ActionResult<Produit>> CreateProductForArtisan(int artisanId, Produit produit)
+        // ✅ POST : api/artisans/{artisanId}/produits
+        [HttpPost("/api/artisans/{artisanId}/produits")]
+        public async Task<ActionResult<Produit>> CreateProductForArtisan(int artisanId, [FromBody] CreateProduitDto dto)
         {
             var artisan = await _context.Users.FindAsync(artisanId);
             if (artisan == null || artisan.Role != UserRole.Artisan)
                 return NotFound("Artisan introuvable");
 
-            produit.ArtisanId = artisanId;
+            var produit = new Produit
+            {
+                Titre = dto.Titre,
+                ImageUrl = dto.ImageUrl,
+                Description = dto.Description,
+                Prix = dto.Prix,
+                Categorie = dto.Categorie,
+                Stock = dto.Stock,
+                DateAjout = DateTime.Now,
+                ArtisanId = artisanId
+            };
+
             _context.Produits.Add(produit);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetProductsByArtisan),
-                new { artisanId = artisanId }, produit);
+            return CreatedAtAction(nameof(GetProduitById), new { id = produit.Id }, produit);
         }
 
-        //  PUT : api/produits/{id}
-        [HttpPut("api/produits/{id}")]
-        public async Task<IActionResult> UpdateProduct(int id, Produit produit)
+        // ✅ PUT : api/produits/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] Produit produit)
         {
             if (id != produit.Id)
                 return BadRequest();
@@ -102,8 +149,8 @@ namespace ArtMarketPlaceAPI.Controllers
             return NoContent();
         }
 
-        // DELETE : api/produits/{id}
-        [HttpDelete("api/produits/{id}")]
+        // ✅ DELETE : api/produits/{id}
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var produit = await _context.Produits.FindAsync(id);
