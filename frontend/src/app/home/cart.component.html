@@ -1,0 +1,47 @@
+<div *ngIf="cart.length > 0; else emptyCart">
+  <!-- Liste des produits -->
+  <ul class="list-group mb-3">
+    <li class="list-group-item d-flex justify-content-between align-items-center"
+        *ngFor="let item of cart">
+      <div>
+        <strong>{{ item.produit.titre }}</strong> (x{{ item.quantite }})
+        <br>
+        <small>{{ item.produit.prix | currency:'EUR' }}</small>
+      </div>
+      <button class="btn btn-sm btn-danger" (click)="removeItem(item.id)">❌</button>
+    </li>
+  </ul>
+
+  <!-- Total -->
+  <div class="mb-3 text-end">
+    <h5>Total : {{ total | currency:'EUR' }}</h5>
+  </div>
+
+  <!-- Checkout -->
+  <div class="checkout-form">
+    <input type="text"
+           class="form-control mb-2"
+           [(ngModel)]="shippingAddress"
+           placeholder="Adresse de livraison">
+
+    <select class="form-select mb-2" [(ngModel)]="paymentMethod">
+      <option value="Carte">💳 Carte</option>
+      <option value="Paypal">🅿️ Paypal</option>
+      <option value="Cash">💵 Cash à la livraison</option>
+    </select>
+
+    <button class="btn btn-success w-100" (click)="checkout()">
+      ✅ Passer la commande
+    </button>
+  </div>
+</div>
+
+<!-- Panier vide -->
+<ng-template #emptyCart>
+  <p class="text-center text-muted">🛒 Votre panier est vide.</p>
+</ng-template>
+
+<!-- Message de confirmation -->
+<div *ngIf="confirmationMessage" class="alert alert-info mt-3">
+  {{ confirmationMessage }}
+</div>

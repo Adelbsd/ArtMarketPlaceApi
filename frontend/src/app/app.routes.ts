@@ -10,6 +10,7 @@ import { ProductListComponent } from './dashboards/artisan/product-list.componen
 import { AuthGuard } from './guards/auth.guard';
 import { PublicProductsComponent } from './public/public-products/public-products.component';
 import { HomeComponent } from './home/home.component';
+import { CartComponent } from './home/cart.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -18,6 +19,7 @@ export const routes: Routes = [
 
  
   { path: 'produits', component: PublicProductsComponent, canActivate: [AuthGuard] },
+    { path: 'cart', component: CartComponent },
   
   
   { path: '', redirectTo: '/home', pathMatch: 'full' },
