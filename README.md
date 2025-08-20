@@ -1,3 +1,8 @@
+To start : 
+    -1    dotnet run on terminal ArtMarketPlaceApi
+    -2    ng serve on frontend 
+
+
 
 ### Comment executer le projet 
 
