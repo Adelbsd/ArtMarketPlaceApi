@@ -15,6 +15,55 @@ namespace ArtMarketPlaceAPI.Controllers
         {
             _context = context;
         }
+        // 📌 GET: api/customers/{customerId}/dashboard
+[HttpGet("{customerId}/dashboard")]
+public async Task<ActionResult<object>> GetCustomerDashboard(int customerId)
+{
+    var commandes = await _context.Commandes
+        .Include(c => c.Lignes)
+            .ThenInclude(l => l.Produit)
+        .Where(c => c.ClientId == customerId)
+        .OrderByDescending(c => c.DateCommande)
+        .ToListAsync();
+
+    if (!commandes.Any())
+    {
+        return Ok(new
+        {
+            recentPurchases = new List<object>(),
+            favorites = new List<object>(),
+            ordersStatus = new List<object>()
+        });
+    }
+
+    var dashboard = new
+    {
+        // 🛒 5 dernières commandes
+        recentPurchases = commandes.Take(5).Select(c => new
+        {
+            id = c.Id,
+            dateCommande = c.DateCommande,
+            produits = c.Lignes.Select(l => new
+            {
+                titre = l.Produit.Titre,
+                quantite = l.Quantité,
+                prixUnitaire = l.PrixUnitaire
+            })
+        }),
+
+        
+        // 🚚 Statut des commandes
+        ordersStatus = commandes.Select(c => new
+        {
+            id = c.Id,
+            statut = c.Statut.ToString(),
+            statutLivraison = c.StatutLivraison.ToString()
+        })
+    };
+
+    return Ok(dashboard);
+}
+
 
         // 📌 GET: api/customers/{customerId}/orders
         [HttpGet("{customerId}/orders")]

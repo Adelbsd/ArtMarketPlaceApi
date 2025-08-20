@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -31,18 +31,28 @@ export class DeliveryComponent implements OnInit {
     this.loadHistory();
   }
 
+  // ⚡ Helper pour injecter le token dans les headers
+  private getAuthHeaders() {
+    const token = this.authService.getToken(); // à implémenter si pas déjà
+    return {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${token}`
+      })
+    };
+  }
+
   // 📦 Livraisons en cours
   loadDeliveries() {
-    this.http.get<any[]>(`${this.apiUrl}/${this.livreurId}/orders`)
+    this.http.get<any[]>(`${this.apiUrl}/${this.livreurId}/orders`, this.getAuthHeaders())
       .subscribe({
         next: (data) => this.deliveries = data,
         error: (err) => console.error('Erreur lors du chargement des livraisons', err)
       });
   }
 
-  // 📜 Historique
+  // 🕒 Historique
   loadHistory() {
-    this.http.get<any[]>(`${this.apiUrl}/${this.livreurId}/history`)
+    this.http.get<any[]>(`${this.apiUrl}/${this.livreurId}/history`, this.getAuthHeaders())
       .subscribe({
         next: (data) => this.deliveriesHistory = data,
         error: (err) => console.error('Erreur lors du chargement de l’historique', err)
@@ -51,7 +61,7 @@ export class DeliveryComponent implements OnInit {
 
   // 🔄 Mettre à jour le statut
   updateStatus(orderId: number, newStatus: string) {
-    this.http.put(`${this.apiUrl}/orders/${orderId}/status`, { status: newStatus })
+    this.http.put(`${this.apiUrl}/orders/${orderId}/status`, { status: newStatus }, this.getAuthHeaders())
       .subscribe({
         next: () => {
           console.log(`Statut mis à jour : ${newStatus}`);
