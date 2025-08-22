@@ -22,7 +22,7 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
-  // Récupère tous les produits (pour Admin ou Client)
+  
   getProducts(params?: any): Observable<Product[]> {
     let httpParams = new HttpParams();
     if (params) {
@@ -41,7 +41,7 @@ export class ProductService {
     return this.http.get<Product[]>(`${this.apiUrl}/artisans/${artisanId}/products`);
   }
 
-  // Créer un produit
+
   createProduct(product: Product, artisanId?: number): Observable<Product> {
     if (artisanId) {
       

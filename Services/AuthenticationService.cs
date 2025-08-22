@@ -60,7 +60,7 @@ namespace ArtMarketPlaceAPI.Services
                 token,
                 email = user.Email,
                 role = user.Role,
-                userId = user.Id // 👈 pratique pour debug côté Angular
+                userId = user.Id 
             };
         }
 
@@ -82,19 +82,21 @@ namespace ArtMarketPlaceAPI.Services
         {
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // 👈 ID inclus dans le token
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), 
                 new Claim(ClaimTypes.Name, user.Email),
                 new Claim(ClaimTypes.Role, user.Role.ToString())
             };
 
+#pragma warning disable CS8604 // Possible null reference argument.
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+#pragma warning restore CS8604 // Possible null reference argument.
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(2),
+                expires: DateTime.UtcNow.AddHours(10),
                 signingCredentials: creds
             );
 

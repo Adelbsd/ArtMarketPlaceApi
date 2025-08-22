@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:5009/api/auth';
+  private apiUrl = 'http://localhost:5009/api/Auth';
+
+  
+  private roleSubject = new BehaviorSubject<string | null>(this.getUserRole());
+  role$ = this.roleSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -34,7 +38,7 @@ export class AuthService {
 
     try {
       const decoded: any = jwtDecode(token);
-      console.log("📜 JWT décodé :", decoded); 
+      console.log('📜 JWT décodé :', decoded);
 
       const rawRole =
         decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] ||
@@ -43,19 +47,19 @@ export class AuthService {
         decoded['roles'] ||
         null;
 
-      console.log("🎯 Rôle brut :", rawRole);
+      console.log('🎯 Rôle brut :', rawRole);
 
+      // Uniformisation des noms si besoin
       const roleMap: { [key: string]: string } = {
         'Admin': 'Admin',
         'Artisan': 'Artisan',
-        'Client': 'Customer',
-        'Customer': 'Customer',
-        'Livreur': 'DeliveryPartner',
-        'DeliveryPartner': 'DeliveryPartner'
+        'Client': 'Client',
+        'Customer': 'Client',
+        'Livreur': 'Livreur',
+        'DeliveryPartner': 'Livreur'
       };
 
       return rawRole ? roleMap[rawRole] || rawRole : null;
-
     } catch (error) {
       console.error('Erreur lors du décodage du token :', error);
       return null;
@@ -63,28 +67,30 @@ export class AuthService {
   }
 
   getUserId(): number | null {
-  const token = this.getToken();
-  if (!token) return null;
+    const token = this.getToken();
+    if (!token) return null;
 
-  try {
-    const decoded: any = jwtDecode(token);
-    console.log("🔑 Token décodé :", decoded);
+    try {
+      const decoded: any = jwtDecode(token);
+      console.log(' Token décodé :', decoded);
 
-    return (
-      decoded["nameid"] ||
-      decoded["sub"] ||
-      decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] ||
-      null
-    );
-  } catch (error) {
-    console.error("Erreur lors du décodage du token :", error);
-    return null;
+      return (
+        decoded['nameid'] ||
+        decoded['sub'] ||
+        decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] ||
+        null
+      );
+    } catch (error) {
+      console.error('Erreur lors du décodage du token :', error);
+      return null;
+    }
   }
-}
 
   saveToken(token: string): void {
     if (this.isBrowser()) {
       localStorage.setItem('token', token);
+      const role = this.getUserRole();
+      this.roleSubject.next(role);  
     }
   }
 
@@ -97,6 +103,7 @@ export class AuthService {
     if (this.isBrowser()) {
       localStorage.removeItem('token');
       localStorage.removeItem('role');
+      this.roleSubject.next(null); 
     }
   }
 

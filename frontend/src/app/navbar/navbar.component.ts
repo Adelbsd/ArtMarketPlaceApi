@@ -17,7 +17,14 @@ export class NavbarComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
-    const role = this.authService.getUserRole();
+  this.authService.role$.subscribe(role => {
+    console.log(" Rôle reçu dans Navbar:", role);
+    if (!role) {
+      this.userPageLink = '';
+      this.userPageLabel = '';
+      return;
+    }
+
     switch (role) {
       case 'Admin':
         this.userPageLink = '/admin-dashboard';
@@ -35,11 +42,16 @@ export class NavbarComponent implements OnInit {
         this.userPageLink = '/delivery-dashboard';
         this.userPageLabel = 'Tableau Livreur';
         break;
+      default:
+        this.userPageLink = '';
+        this.userPageLabel = '';
     }
-  }
+  });
+}
+
 
   isLoggedIn(): boolean {
-    return this.authService.isLoggedIn(); // Vérifie si un token existe
+    return this.authService.isLoggedIn(); 
   }
   logout() {
     this.authService.logout();

@@ -31,9 +31,8 @@ export class DeliveryComponent implements OnInit {
     this.loadHistory();
   }
 
-  // ⚡ Helper pour injecter le token dans les headers
   private getAuthHeaders() {
-    const token = this.authService.getToken(); // à implémenter si pas déjà
+    const token = this.authService.getToken();
     return {
       headers: new HttpHeaders({
         Authorization: `Bearer ${token}`
@@ -41,7 +40,7 @@ export class DeliveryComponent implements OnInit {
     };
   }
 
-  // 📦 Livraisons en cours
+  
   loadDeliveries() {
     this.http.get<any[]>(`${this.apiUrl}/${this.livreurId}/orders`, this.getAuthHeaders())
       .subscribe({
@@ -50,7 +49,7 @@ export class DeliveryComponent implements OnInit {
       });
   }
 
-  // 🕒 Historique
+
   loadHistory() {
     this.http.get<any[]>(`${this.apiUrl}/${this.livreurId}/history`, this.getAuthHeaders())
       .subscribe({
@@ -59,16 +58,31 @@ export class DeliveryComponent implements OnInit {
       });
   }
 
-  // 🔄 Mettre à jour le statut
+
   updateStatus(orderId: number, newStatus: string) {
     this.http.put(`${this.apiUrl}/orders/${orderId}/status`, { status: newStatus }, this.getAuthHeaders())
       .subscribe({
         next: () => {
-          console.log(`Statut mis à jour : ${newStatus}`);
+          console.log(`✅ Statut mis à jour : ${newStatus}`);
           this.loadDeliveries();
           this.loadHistory();
         },
-        error: (err) => console.error('Erreur lors de la mise à jour du statut', err)
+        error: (err) => console.error('❌ Erreur lors de la mise à jour du statut', err)
       });
+  }
+
+
+  assignOrder(orderId: number) {
+    this.http.put(
+      `${this.apiUrl}/${this.livreurId}/orders/${orderId}/assign`,
+      {},
+      this.getAuthHeaders()
+    ).subscribe({
+      next: () => {
+        console.log(`✅ Commande ${orderId} assignée au livreur ${this.livreurId}`);
+        this.loadDeliveries();
+      },
+      error: (err) => console.error('❌ Erreur lors de l’assignation de la commande', err)
+    });
   }
 }

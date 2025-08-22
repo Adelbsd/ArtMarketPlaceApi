@@ -19,3 +19,19 @@ public class Produit
     public ICollection<Avis>? Avis { get; set; }
    
 }
+
+public class Avis
+{
+    public int Id { get; set; }
+
+    public int Note { get; set; } 
+    public string? Commentaire { get; set; }
+
+    public int ProduitId { get; set; }
+    public Produit Produit { get; set; } = null!;
+
+    public int ClientId { get; set; }
+    public User Client { get; set; } = null!;
+
+    public DateTime DateAvis { get; set; } = DateTime.UtcNow;
+}

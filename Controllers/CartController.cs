@@ -16,7 +16,7 @@ namespace ArtMarketPlaceAPI.Controllers
             _context = context;
         }
 
-        // DTOs
+
         public class AddToCartDto
         {
             public int ProduitId { get; set; }
@@ -29,7 +29,7 @@ namespace ArtMarketPlaceAPI.Controllers
             public string PaymentMethod { get; set; } = "Carte";
         }
 
-        // ➕ Ajouter au panier (crée ou incrémente)
+      
         [HttpPost("add")]
         public async Task<IActionResult> AddToCart(int customerId, [FromBody] AddToCartDto dto)
         {
@@ -41,7 +41,7 @@ namespace ArtMarketPlaceAPI.Controllers
             var produit = await _context.Produits.FindAsync(dto.ProduitId);
             if (produit == null) return NotFound("Produit introuvable.");
 
-            // Si le même produit est déjà dans le panier, on incrémente
+            
             var existing = await _context.CartItems
                 .FirstOrDefaultAsync(ci => ci.ClientId == customerId && ci.ProduitId == dto.ProduitId);
 
@@ -56,7 +56,7 @@ namespace ArtMarketPlaceAPI.Controllers
                     ClientId = customerId,
                     ProduitId = dto.ProduitId,
                     Quantite = dto.Quantite,
-                    // navigations seront chargées si besoin via Include
+                 
                     Client = await _context.Users.FirstAsync(u => u.Id == customerId),
                     Produit = produit
                 };
@@ -67,7 +67,7 @@ namespace ArtMarketPlaceAPI.Controllers
             return Ok(new { message = "Ajouté au panier." });
         }
 
-        // 📦 Voir le panier
+     
         [HttpGet]
         public async Task<IActionResult> GetCart(int customerId)
         {
@@ -93,7 +93,7 @@ namespace ArtMarketPlaceAPI.Controllers
             }));
         }
 
-        // 🗑️ Retirer un article
+       
         [HttpDelete("{cartItemId}")]
         public async Task<IActionResult> RemoveItem(int customerId, int cartItemId)
         {
@@ -107,7 +107,7 @@ namespace ArtMarketPlaceAPI.Controllers
             return NoContent();
         }
 
-        // 🧹 Vider le panier
+      
         [HttpDelete("clear")]
         public async Task<IActionResult> ClearCart(int customerId)
         {
@@ -120,7 +120,7 @@ namespace ArtMarketPlaceAPI.Controllers
             return NoContent();
         }
 
-        // 💳 Checkout → crée une Commande + LignesCommande et vide le panier
+       
         [HttpPost("checkout")]
         public async Task<IActionResult> Checkout(int customerId, [FromBody] CheckoutDto dto)
         {
@@ -131,7 +131,7 @@ namespace ArtMarketPlaceAPI.Controllers
 
             if (!cart.Any()) return BadRequest("Panier vide.");
 
-            // ATTENTION : Produit.Prix est float → cast en decimal pour Commande.Total et PrixUnitaire (decimal)
+          
             var total = cart.Sum(c => (decimal)c.Produit.Prix * c.Quantite);
 
             var commande = new Commande

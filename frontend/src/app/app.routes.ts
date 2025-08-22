@@ -14,14 +14,10 @@ import { CartComponent } from './home/cart.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
- 
   { path: 'login', component: LoginComponent },
-
- 
   { path: 'produits', component: PublicProductsComponent, canActivate: [AuthGuard] },
-    { path: 'cart', component: CartComponent },
-  
-  
+  { path: 'cart', component: CartComponent },
+
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 
   {
@@ -42,12 +38,13 @@ export const routes: Routes = [
     path: 'customer-dashboard',
     component: CustomerComponent,
     canActivate: [RoleGuard],
-    data: { expectedRole: 'Customer' }
+    data: { expectedRole: 'Client' }  
   },
   {
     path: 'delivery-dashboard',
     component: DeliveryComponent,
     canActivate: [RoleGuard],
-    data: { expectedRole: 'DeliveryPartner' }
+    data: { expectedRole: 'Livreur' }  
   }
 ];
+

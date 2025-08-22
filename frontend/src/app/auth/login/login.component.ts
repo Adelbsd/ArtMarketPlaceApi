@@ -8,29 +8,57 @@ import { Router } from '@angular/router';
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, FormsModule],
+  styleUrl: './login.component.scss',
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
+  isRegisterMode = false;   
+
   loginData = {
     email: '',
     mdp: ''
   };
 
+  registerData = {
+    nomComplet: '',
+    email: '',
+    mdp: '',
+    role: 1
+  };
+
+  roles = [
+    { value: 0, label: 'Artisan' },
+    { value: 1, label: 'Client' },
+    { value: 2, label: 'Livreur' }
+  ];
+
   constructor(private authService: AuthService, private router: Router) {}
+
+  toggleMode() {
+    this.isRegisterMode = !this.isRegisterMode;
+  }
 
   onSubmit() {
     this.authService.login(this.loginData).subscribe({
       next: (res) => {
-        console.log('Connexion réussie', res);
-        localStorage.setItem('token', res.token);
-
-        const mappedRole = this.authService.getUserRole(); 
-        console.log('Redirection en cours vers le rôle :', mappedRole);
+        this.authService.saveToken(res.token);
+        const mappedRole = this.authService.getUserRole();
         this.redirectToDashboard(mappedRole);
       },
       error: (err) => {
-        console.error('Erreur de connexion', err);
         alert('Email ou mot de passe incorrect');
+      }
+    });
+  }
+
+  onRegister() {
+    this.authService.register(this.registerData).subscribe({
+      next: () => {
+        alert('Compte créé avec succès');
+        //this.isRegisterMode = false;
+      },
+      error: (err) => {
+        alert('Erreur lors de l’inscription');
       }
     });
   }
@@ -43,14 +71,13 @@ export class LoginComponent {
       case 'Artisan':
         this.router.navigate(['/artisan-dashboard']);
         break;
-      case 'Customer':
+      case 'Client':
         this.router.navigate(['/customer-dashboard']);
         break;
-      case 'DeliveryPartner':
+      case 'Livreur':
         this.router.navigate(['/delivery-dashboard']);
         break;
       default:
-        console.warn('Rôle inconnu, redirection vers /login');
         this.router.navigate(['/login']);
     }
   }

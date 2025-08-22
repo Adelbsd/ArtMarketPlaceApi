@@ -1,5 +1,5 @@
 <div *ngIf="cart.length > 0; else emptyCart">
-  <!-- Liste des produits -->
+ 
   <ul class="list-group mb-3">
     <li class="list-group-item d-flex justify-content-between align-items-center"
         *ngFor="let item of cart">
@@ -12,12 +12,10 @@
     </li>
   </ul>
 
-  <!-- Total -->
   <div class="mb-3 text-end">
     <h5>Total : {{ total | currency:'EUR' }}</h5>
   </div>
 
-  <!-- Checkout -->
   <div class="checkout-form">
     <input type="text"
            class="form-control mb-2"
@@ -36,12 +34,10 @@
   </div>
 </div>
 
-<!-- Panier vide -->
 <ng-template #emptyCart>
   <p class="text-center text-muted">🛒 Votre panier est vide.</p>
 </ng-template>
 
-<!-- Message de confirmation -->
 <div *ngIf="confirmationMessage" class="alert alert-info mt-3">
   {{ confirmationMessage }}
 </div>

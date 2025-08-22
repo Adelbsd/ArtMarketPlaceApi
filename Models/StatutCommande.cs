@@ -9,17 +9,17 @@ namespace ArtMarketPlaceAPI.Models
     {
         EnAttente,
         EnPreparation,
-        Expediée,
-        Livrée,
-        Annulée,
+        Expediee,
+        Livree,
+        Annulee,
     }
 
     public enum StatutLivraison
 {
     EnAttenteRetrait,
     EnTransit,
-    Livré,
-    Distribuée
+    Livre,
+    Distribuee
     }
 
 }

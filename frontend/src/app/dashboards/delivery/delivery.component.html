@@ -1,78 +1,74 @@
-<div class="container mt-4">
-  <h2 class="mb-4">Tableau de bord - Livreur</h2>
+<div class="container py-4">
+  <h2 class="mb-4 text-center"> Dashboard Livreur</h2>
 
-  <!-- Section Livraisons assignées -->
-  <div class="card shadow mb-4">
-    <div class="card-header bg-primary text-white">
-      <h5>Livraisons en cours</h5>
-    </div>
-    <div class="card-body p-0">
-      <table class="table table-striped m-0">
-        <thead class="table-light">
-          <tr>
-            <th>Commande</th>
-            <th>Client</th>
-            <th>Adresse</th>
-            <th>Statut</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let delivery of deliveries">
-            <td>{{ delivery.orderId }}</td>
-            <td>{{ delivery.customerName }}</td>
-            <td>{{ delivery.address }}</td>
-            <td>
-              <span class="badge bg-warning text-dark" *ngIf="delivery.status === 'pending'">En attente</span>
-              <span class="badge bg-info" *ngIf="delivery.status === 'picked up'">Récupéré</span>
-              <span class="badge bg-primary" *ngIf="delivery.status === 'in transit'">En transit</span>
-              <span class="badge bg-success" *ngIf="delivery.status === 'delivered'">Livré</span>
-            </td>
-            <td>
-              <select class="form-select form-select-sm" [(ngModel)]="delivery.status">
-                <option value="picked up">Récupéré</option>
-                <option value="in transit">En transit</option>
-                <option value="delivered">Livré</option>
-              </select>
-              <button class="btn btn-sm btn-success mt-1"
-                      (click)="updateStatus(delivery.orderId, delivery.status)">
-                Mettre à jour
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  
+  <h4 class="mb-3">📦 Mes livraisons en cours</h4>
+  <div class="row g-4">
+    <div class="col-md-6 col-lg-4" *ngFor="let delivery of deliveries">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body">
+          <h5 class="card-title">Commande #{{ delivery.orderId }}</h5>
+          <p><strong>Client :</strong> {{ delivery.customerName }}</p>
+          <p><strong>Adresse :</strong> {{ delivery.address }}</p>
+
+       
+          <p class="mb-2">
+            <span *ngIf="delivery.status === 'EnAttenteRetrait'" class="badge bg-warning text-dark">⏳ En attente</span>
+            <span *ngIf="delivery.status === 'EnTransit'" class="badge bg-primary">🚚 En transit</span>
+            <span *ngIf="delivery.status === 'Livre'" class="badge bg-info">📥 Livré</span>
+            <span *ngIf="delivery.status === 'Distribuee'" class="badge bg-success">✅ Distribuée</span>
+          </p>
+
+          <ul class="list-group small mb-3">
+            <li *ngFor="let p of delivery.produits" class="list-group-item d-flex justify-content-between align-items-center">
+              {{ p.titre }} (x{{ p.quantite }})
+              <span>{{ p.prixUnitaire | currency:'EUR' }}</span>
+            </li>
+          </ul>
+
+          
+          <div class="d-flex gap-2">
+            <select class="form-select form-select-sm" [(ngModel)]="delivery.status">
+              <option value="EnAttenteRetrait">En attente</option>
+              <option value="EnTransit">En transit</option>
+              <option value="Livre">Livré</option>
+              <option value="Distribuee">Distribuée</option>
+            </select>
+            <button class="btn btn-sm btn-success"
+                    (click)="updateStatus(delivery.orderId, delivery.status)">
+              ✔ Mettre à jour
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Section Historique -->
-  <div class="card shadow">
-    <div class="card-header bg-secondary text-white">
-      <h5>Historique des livraisons</h5>
-    </div>
-    <div class="card-body p-0">
-      <table class="table table-striped m-0">
-        <thead class="table-light">
-          <tr>
-            <th>Commande</th>
-            <th>Client</th>
-            <th>Adresse</th>
-            <th>Date</th>
-            <th>Statut final</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let history of deliveriesHistory">
-            <td>{{ history.orderId }}</td>
-            <td>{{ history.customerName }}</td>
-            <td>{{ history.address }}</td>
-            <td>{{ history.date | date:'short' }}</td>
-            <td>
-              <span class="badge bg-success">{{ history.status }}</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+
+  <h4 class="mt-5 mb-3">📜 Historique de mes livraisons</h4>
+  <div class="row g-4">
+    <div class="col-md-6 col-lg-4" *ngFor="let history of deliveriesHistory">
+      <div class="card shadow-sm border-0 h-100 bg-light">
+        <div class="card-body">
+          <h5 class="card-title">Commande #{{ history.orderId }}</h5>
+          <p><strong>Client :</strong> {{ history.customerName }}</p>
+          <p><strong>Adresse :</strong> {{ history.address }}</p>
+          <p><strong>Date :</strong> {{ history.date | date:'short' }}</p>
+
+         
+          <ul class="list-group small">
+            <li *ngFor="let p of history.produits" class="list-group-item d-flex justify-content-between align-items-center">
+              {{ p.titre }} (x{{ p.quantite }})
+              <span>{{ p.prixUnitaire | currency:'EUR' }}</span>
+            </li>
+          </ul>
+
+       
+          <p class="mt-2">
+            <span class="badge bg-success">✅ {{ history.status }}</span>
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </div>

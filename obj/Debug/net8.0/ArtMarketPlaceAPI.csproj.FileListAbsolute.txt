@@ -153,3 +153,8 @@ C:\Users\PC\ArtMarketPlaceAPI\obj\Debug\net8.0\refint\ArtMarketPlaceAPI.dll
 C:\Users\PC\ArtMarketPlaceAPI\obj\Debug\net8.0\ArtMarketPlaceAPI.pdb
 C:\Users\PC\ArtMarketPlaceAPI\obj\Debug\net8.0\ArtMarketPlaceAPI.genruntimeconfig.cache
 C:\Users\PC\ArtMarketPlaceAPI\obj\Debug\net8.0\ref\ArtMarketPlaceAPI.dll
+C:\Users\PC\ArtMarketPlaceAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\PC\ArtMarketPlaceAPI\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\PC\ArtMarketPlaceAPI\obj\Debug\net8.0\rjimswa.dswa.cache.json
+C:\Users\PC\ArtMarketPlaceAPI\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+C:\Users\PC\ArtMarketPlaceAPI\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json

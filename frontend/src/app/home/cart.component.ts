@@ -27,25 +27,22 @@ export class CartComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const id = this.authService.getUserId();
-    if (id) {
-      this.customerId = Number(id);
+  const id = this.authService.getUserId();
+  if (id) {
+    this.customerId = Number(id);
+    this.loadCart();
+
+    
+    this.cartService.cartUpdated$.subscribe(() => {
       this.loadCart();
-    } else {
-      console.warn("⚠️ Aucun client connecté, pas de panier disponible.");
-    }
+    });
+  } else {
+    console.warn("⚠️ Aucun client connecté, pas de panier disponible.");
   }
-isOpen = false;
-
-openCart() {
-  this.isOpen = true;
 }
 
-closeCart() {
-  this.isOpen = false;
-}
 
-  loadCart() {
+loadCart() {
     this.cartService.getCart(this.customerId).subscribe({
       next: (data) => {
         this.cart = data;

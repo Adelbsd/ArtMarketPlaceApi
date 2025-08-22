@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Product, ProductService } from '../services/product.service';
 import { CartService } from '../services/cart.service';
 import { CartComponent } from './cart.component';
-import { AuthService } from '../services/auth.service'; // ✅ pour récupérer le vrai client connecté
+import { AuthService } from '../services/auth.service'; 
 
 @Component({
   selector: 'app-home',
@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
   errorMessage: string | null = null;
   cartOpen: boolean = false;
 
-  customerId!: number; // ✅ Id dynamique depuis JWT
+  customerId!: number; 
 
   constructor(
     private productService: ProductService,
@@ -32,13 +32,13 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.loadProducts();
 
-    //  Récupération de l'ID du client connecté
+   
     const id = this.authService.getUserId();
     if (id) {
       this.customerId = Number(id);
     } else {
       console.warn("⚠️ Aucun client connecté, fallback sur ID = 1");
-      this.customerId = 1; // fallback pour test
+      this.customerId = 1;
     }
   }
 

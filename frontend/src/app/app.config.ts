@@ -11,6 +11,6 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
-    importProvidersFrom(FormsModule, ReactiveFormsModule, HttpClientModule) // Ajouter FormsModule ici
+    importProvidersFrom(FormsModule, ReactiveFormsModule, HttpClientModule) 
   ]
 };

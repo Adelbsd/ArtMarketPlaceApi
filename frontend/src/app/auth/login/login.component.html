@@ -1,59 +1,80 @@
-
-<video autoplay muted loop playsinline class="bg-video">
-  <source src="assets/videos/bg connexion.mp4" type="video/mp4">
-  Votre navigateur ne supporte pas les vidéos HTML5.
-</video>
-
 <div class="container d-flex justify-content-center align-items-center vh-100">
   <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
-    <h3 class="text-center mb-4">Bienvenue à ART MARKET PLACE !</h3>
-    
+    <h3 class="text-center mb-4">
+      {{ isRegisterMode ? "Créer un compte" : "Bienvenue à ART MARKET PLACE !" }}
+    </h3>
 
-    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
-      
+
+    <form *ngIf="!isRegisterMode" (ngSubmit)="onSubmit()" #loginForm="ngForm">
       <div class="mb-3">
         <label for="email" class="form-label">Email :</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          class="form-control"
-          [(ngModel)]="loginData.email"
-          required
-          email
-          #email="ngModel"
-        />
+        <input type="email" id="email" name="email" class="form-control"
+               [(ngModel)]="loginData.email" required email #email="ngModel" />
         <div *ngIf="email.invalid && email.touched" class="text-danger small">
           Email invalide
         </div>
       </div>
 
-      
       <div class="mb-3">
         <label for="password" class="form-label">Mot de passe :</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          class="form-control"
-          [(ngModel)]="loginData.mdp"
-          required
-          minlength="6"
-          #mdp="ngModel"
-        />
+        <input type="password" id="password" name="password" class="form-control"
+               [(ngModel)]="loginData.mdp" required minlength="6" #mdp="ngModel" />
         <div *ngIf="mdp.invalid && mdp.touched" class="text-danger small">
-          Mot de passe requis avec chiffres et lettres majuscules
+          Mot de passe requis (min. 6 caractères)
         </div>
       </div>
 
-      
-      <div class="d-grid">
-        <button
-          type="submit"
-          class="btn btn-primary"
-          [disabled]="!loginForm.form.valid"
-        >
+      <div class="d-grid mb-2">
+        <button type="submit" class="btn btn-primary" [disabled]="!loginForm.form.valid">
           <i class="bi bi-box-arrow-in-right"></i> Se connecter
+        </button>
+      </div>
+
+      <div class="text-center">
+        <button type="button" class="btn btn-link p-0" (click)="toggleMode()">
+          Pas encore de compte ? S'inscrire
+        </button>
+      </div>
+    </form>
+
+
+    <form *ngIf="isRegisterMode" (ngSubmit)="onRegister()" #registerForm="ngForm">
+      <div class="mb-3">
+        <label for="nomComplet" class="form-label">Nom complet :</label>
+        <input type="text" id="nomComplet" name="nomComplet" class="form-control"
+               [(ngModel)]="registerData.nomComplet" required #nomComplet="ngModel" />
+      </div>
+
+      <div class="mb-3">
+        <label for="emailRegister" class="form-label">Email :</label>
+        <input type="email" id="emailRegister" name="emailRegister" class="form-control"
+               [(ngModel)]="registerData.email" required email #emailRegister="ngModel" />
+      </div>
+
+      <div class="mb-3">
+        <label for="mdpRegister" class="form-label">Mot de passe :</label>
+        <input type="password" id="mdpRegister" name="mdpRegister" class="form-control"
+               [(ngModel)]="registerData.mdp" required minlength="6" #mdpRegister="ngModel" />
+      </div>
+
+      <div class="mb-3">
+        <label for="role" class="form-label">Rôle :</label>
+        <select id="role" name="role" class="form-control"
+                [(ngModel)]="registerData.role" required>
+          <option *ngFor="let r of roles" [value]="r.value">{{ r.label }}</option>
+        </select>
+      </div>
+
+      <div class="d-grid mb-2">
+        <button type="submit" class="btn btn-success" [disabled]="!registerForm.form.valid">
+          <i class="bi bi-person-plus"></i> S'inscrire
+        </button>
+      </div>
+
+    
+      <div class="text-center">
+        <button type="button" class="btn btn-link p-0" (click)="toggleMode()">
+          Déjà un compte ? Se connecter
         </button>
       </div>
     </form>

@@ -15,16 +15,18 @@ namespace ArtMarketPlaceAPI.Controllers
         {
             _context = context;
         }
-        // 📌 GET: api/customers/{customerId}/dashboard
+      
 [HttpGet("{customerId}/dashboard")]
 public async Task<ActionResult<object>> GetCustomerDashboard(int customerId)
 {
+#pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
     var commandes = await _context.Commandes
         .Include(c => c.Lignes)
             .ThenInclude(l => l.Produit)
         .Where(c => c.ClientId == customerId)
         .OrderByDescending(c => c.DateCommande)
         .ToListAsync();
+#pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
 
     if (!commandes.Any())
     {
@@ -36,9 +38,11 @@ public async Task<ActionResult<object>> GetCustomerDashboard(int customerId)
         });
     }
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8604 // Possible null reference argument.
     var dashboard = new
     {
-        // 🛒 5 dernières commandes
+       
         recentPurchases = commandes.Take(5).Select(c => new
         {
             id = c.Id,
@@ -52,23 +56,27 @@ public async Task<ActionResult<object>> GetCustomerDashboard(int customerId)
         }),
 
         
-        // 🚚 Statut des commandes
         ordersStatus = commandes.Select(c => new
         {
             id = c.Id,
             statut = c.Statut.ToString(),
-            statutLivraison = c.StatutLivraison.ToString()
+            
         })
     };
+#pragma warning restore CS8604 // Possible null reference argument.
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
     return Ok(dashboard);
 }
 
 
-        // 📌 GET: api/customers/{customerId}/orders
+       
         [HttpGet("{customerId}/orders")]
         public async Task<ActionResult<IEnumerable<object>>> GetCustomerOrders(int customerId)
         {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8604 // Possible null reference argument.
+#pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             var commandes = await _context.Commandes
                 .Include(c => c.Lignes)
                     .ThenInclude(l => l.Produit)
@@ -87,11 +95,13 @@ public async Task<ActionResult<object>> GetCustomerDashboard(int customerId)
                     })
                 })
                 .ToListAsync();
+#pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
+#pragma warning restore CS8604 // Possible null reference argument.
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
             return Ok(commandes);
         }
 
-        // 📌 POST: api/customers/{customerId}/orders
         [HttpPost("{customerId}/orders")]
         public async Task<ActionResult> CreateOrder(int customerId, [FromBody] CreateOrderDto dto)
         {
@@ -131,7 +141,7 @@ public async Task<ActionResult<object>> GetCustomerDashboard(int customerId)
         }
     }
 
-    // 📌 DTO pour créer une commande
+   
     public class CreateOrderDto
     {
         public List<CreateOrderLineDto> Produits { get; set; } = new();

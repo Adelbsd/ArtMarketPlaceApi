@@ -1,26 +1,36 @@
-<h1>Bienvenue Client</h1>
-<p>Consultez et achetez des produits d'artisans.</p>
-<div class="container mt-4">
-  <h2>Tableau de bord client</h2>
+<div class="container py-4">
+  <h2 class="mb-4 text-center"> Dashboard client </h2>
 
   <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
 
-  <!-- Achats récents -->
-  <div class="card mt-3">
-    <div class="card-header">Achats récents</div>
-    <ul class="list-group list-group-flush" *ngIf="dashboardData?.recentPurchases?.length">
-      <li class="list-group-item" *ngFor="let order of dashboardData.recentPurchases">
-        Commande #{{ order.id }} - {{ order.dateCommande | date:'short' }}
-        <ul>
-          <li *ngFor="let p of order.produits">
-            {{ p.titre }} (x{{ p.quantite }}) - {{ p.prixUnitaire }} €
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </div>
 
-  <!-- Produits favoris -->
+  <div class="card mt-3">
+  <div class="card-header">Achats récents</div>
+  <ul class="list-group list-group-flush" *ngIf="dashboardData?.recentPurchases?.length">
+    <li class="list-group-item" *ngFor="let order of dashboardData.recentPurchases">
+      Commande #{{ order.id }} - {{ order.dateCommande | date:'short' }}
+      <ul>
+        <li *ngFor="let p of order.produits">
+          {{ p.titre }} (x{{ p.quantite }}) - {{ p.prixUnitaire }} €
+
+         
+          <div class="mt-2 p-2 border rounded bg-light">
+            <label>Note (1 à 5) :</label>
+            <input type="number" [(ngModel)]="avisNote" min="1" max="5" class="form-control mb-2">
+
+            <label>Commentaire :</label>
+            <textarea [(ngModel)]="avisCommentaire" class="form-control mb-2"></textarea>
+
+            <button class="btn btn-sm btn-primary" (click)="envoyerAvis(p.id)">
+              Laisser un avis
+            </button>
+          </div>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
   <div class="card mt-3">
     <div class="card-header">Produits favoris</div>
     <ul class="list-group list-group-flush" *ngIf="dashboardData?.favorites?.length">
@@ -30,12 +40,23 @@
     </ul>
   </div>
 
-  <!-- Statut commandes -->
   <div class="card mt-3">
     <div class="card-header">Statut des commandes</div>
     <ul class="list-group list-group-flush" *ngIf="dashboardData?.ordersStatus?.length">
       <li class="list-group-item" *ngFor="let o of dashboardData.ordersStatus">
-        Commande #{{ o.id }} → {{ o.statut }}
+        Commande #{{ o.id }} →
+        <span class="badge"
+              [ngClass]="{
+                'bg-secondary': o.statutLivraison === 'EnAttenteRetrait',
+                'bg-warning': o.statutLivraison === 'Recuperee',
+                'bg-primary': o.statutLivraison === 'EnCours',
+                'bg-success': o.statutLivraison === 'Distribuée'
+              }"
+              [ngStyle]="{
+                color: o.statutLivraison === 'Recuperee' ? '#212529' : '#fff'
+              }">
+          {{ o.statutLivraison }}
+        </span>
       </li>
     </ul>
   </div>

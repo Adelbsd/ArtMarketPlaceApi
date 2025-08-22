@@ -32,12 +32,12 @@ export class ProductFormComponent {
   onSubmit() {
     if (this.productForm.invalid) return;
 
-    const artisanId = this.authService.getUserId(); // récupère l'ID de l'artisan connecté
+    const artisanId = this.authService.getUserId(); 
     if (!artisanId) {
     this.message = '❌ Impossible de créer le produit : artisan non identifié.';
     return;
   }
-    const product = this.productForm.value; // on n’envoie pas artisanId dans le body !
+    const product = this.productForm.value; 
 
     this.http.post(`http://localhost:5009/api/artisans/${artisanId}/produits`, product).subscribe({
       next: () => {
