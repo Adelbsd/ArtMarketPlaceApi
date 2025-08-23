@@ -49,6 +49,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
   private loadDashboard(customerId: number) {
     this.http.get(`${this.apiUrl}/${customerId}/dashboard`).subscribe({
       next: (data) => {
+        console.log(" Dashboard Data:", data);
         this.dashboardData = data;
       },
       error: () => {

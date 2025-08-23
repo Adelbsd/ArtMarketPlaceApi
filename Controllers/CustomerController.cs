@@ -60,6 +60,7 @@ public async Task<ActionResult<object>> GetCustomerDashboard(int customerId)
         {
             id = c.Id,
             statut = c.Statut.ToString(),
+            statutLivraison = c.StatutLivraison.ToString()
             
         })
     };

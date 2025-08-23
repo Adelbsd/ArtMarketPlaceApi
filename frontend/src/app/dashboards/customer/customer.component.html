@@ -45,18 +45,19 @@
     <ul class="list-group list-group-flush" *ngIf="dashboardData?.ordersStatus?.length">
       <li class="list-group-item" *ngFor="let o of dashboardData.ordersStatus">
         Commande #{{ o.id }} →
-        <span class="badge"
-              [ngClass]="{
-                'bg-secondary': o.statutLivraison === 'EnAttenteRetrait',
-                'bg-warning': o.statutLivraison === 'Recuperee',
-                'bg-primary': o.statutLivraison === 'EnCours',
-                'bg-success': o.statutLivraison === 'Distribuée'
-              }"
-              [ngStyle]="{
-                color: o.statutLivraison === 'Recuperee' ? '#212529' : '#fff'
-              }">
-          {{ o.statutLivraison }}
-        </span>
+       <span class="badge"
+      [ngClass]="{
+        'bg-secondary': o.statutLivraison === 'EnAttenteRetrait',
+        'bg-warning': o.statutLivraison === 'Recuperee',
+        'bg-primary': o.statutLivraison === 'EnCours',
+        'bg-success': o.statutLivraison === 'Distribuee',
+        'bg-dark': !['EnAttenteRetrait','Recuperee','EnCours','Distribuee'].includes(o.statutLivraison)
+      }"
+      [ngStyle]="{
+        color: o.statutLivraison === 'Recuperee' ? '#212529' : '#fff'
+      }">
+  {{ o.statutLivraison }}
+      </span> 
       </li>
     </ul>
   </div>
